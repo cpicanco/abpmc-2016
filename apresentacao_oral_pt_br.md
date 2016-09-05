@@ -2,7 +2,7 @@ XXV Encontro Brasileiro de Psicologia e Medicina Comportamental, 2016, Foz do Ig
 
 # Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica.
 
-Carlos Rafael Fernandes Picanço & François Jacques Tonneau.
+Carlos Rafael Fernandes Picanço & François Jacques Tonneau.   
 Universidade Federal do Pará, Belém, PA, Brasil.
 
 **Resumo**
@@ -19,7 +19,7 @@ Este trabalho não seria possível sem o apoio da CAPES (Bolsa de doutorado ao p
 
 **tl;dr**
 
-Ao longo desta apresentação eu argumentarei que o uso plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos de categorização amplamente reconhecidos no campo da 'Descoberta de Conhecimento e Mineração de Dados' permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Em seguida, por meio de um micro-experimento, demonstrarei o sistema de rastreamento de visão que montei com as referidas tecnologias. Por fim, deixo a previsão de que o Aprendizado de Máquina, embora não tão acessível atualmente, tornará o sistema obsoleto e pode ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas.
+Ao longo desta apresentação eu apresentarei um método automático de análise de dados comportamentais baseado em segmentação temporal e em um algoritmo (DBSCAN) de categorização amplamente reconhecido no campo da 'Descoberta de Conhecimento e Mineração de Dados'. Argumentarei que o uso plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos to tipo permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Em seguida, por meio de um micro-experimento, demonstrarei um sistema de rastreamento de visão em funcionamento por meio das referidas tecnologias. Por fim, deixarei a previsão de que o Aprendizado de Máquina, embora atualmente não tão acessível  quanto o método proposto, irá torná-lo obsoleto e pode ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas em diferentes meios.
 
 **tl;rl**
 
@@ -46,51 +46,55 @@ Segundo, construir pode não parecer uma opção das mais viáveis para os cient
 
 ### Solução 1 - Construa!
 
-Mas e se for um falso dilema? Um primeira solução: pode ser sábio construir, como aquele querido professor já havia sugerido. Por exemplo, um *software* livre para experimentos comportamentais pode contribuir como um nicho de diversificação da análise do comportamento (Reimer, 2016). É importante notar que a engenharia de *softwares* comportamentais é uma área recente no escopo das ciências da computação ([Lenberg, 2015][lenberg]), ainda que possa ser vista com saudosismo por alguns analistas do comportamento ([Stephens, 2007][stephens]). É notável, também, que interfaces entre ciências da computação e análise do comportamento já tenham sido feitas no campo da educação técnica ([Harrison, 2005][harrison]).
+Mas e se a questão for um falso dilema? Um primeira solução seria: pode ser sábio construir, como aquele querido professor já havia sugerido. Por exemplo, um *software* livre para experimentos comportamentais pode contribuir como um nicho de diversificação da análise do comportamento (Reimer, 2016). É importante notar que a engenharia de *softwares* comportamentais é uma área recente no escopo das ciências da computação ([Lenberg, 2015][lenberg]), ainda que possa ser vista com saudosismo por alguns analistas do comportamento ([Stephens, 2007][stephens]). É notável, também, que interfaces entre ciências da computação e análise do comportamento já tenham sido feitas no campo da educação técnica ([Harrison, 2005][harrison]).
 
 ### Solução 2 - Colabore!
 
-Mas há uma outra alternativa: colaborar. Os cientistas da computação tem desenvolvido plataformas de rastreamento de visão *open-source* acessíveis. A solução para nós é usá-las; e eu devo inclusive sugerir, apoiá-las e sofisticá-las. Após comprar ou construir o seu lindo rastreador, você pesquisador deverá assegurar que pode usá-lo de maneira automatizada, transparente e inovadora. Seja durante a coleta de dados, seja durante a análise de dados. Isto simplesmente não seria possível sem a iniciativa e apoio de comunidades *open-source*. Por que a análise do comportamento não possui nenhuma comunidade *open-source*?
+Mas há uma outra alternativa: colaborar. Os cientistas da computação tem desenvolvido plataformas de rastreamento de visão *open-source* acessíveis. A solução para nós é usá-las; e eu devo inclusive sugerir, apoiá-las e sofisticá-las. Após comprar ou construir o seu lindo rastreador, você pesquisador deverá assegurar que pode usá-lo de maneira automatizada, transparente e inovadora. Seja durante a coleta de dados, seja durante a análise de dados. Isto simplesmente não seria possível sem a iniciativa e apoio de comunidades *open-source*. Por que a análise do comportamento não tem promovido iniciativas *open-source* e *open-science*?
 
-Deixo a questão em aberto. Passo então ao ponto específico do trabalho.
+Pois acho que isso pode e deve mudar. Passemos, então, ao ponto específico do trabalho.
 
 ___
 
-## Análise do comportamento e Rastreamento de Visão: a geração *Video Frame Coder ®*.
+## Análise do comportamento e Rastreamento de Visão: a geração *Video Frame Coder* ®.
 
-A análise comportamental no campo de rastreamento de visão frequentemente demanda como dado bruto movimentos oculares categorizados de acordo com os estímulos, respostas e condições experimentais de interesse. Uma estratégia comum tem sido categorizar os vídeos dos rastreadores manualmente, com o auxílio de programas de computador como o Video Frame Coder ® ([Dube et al, 2010][dube];[Huziwara, Souza & Tomanari, 2016][huziwara]; Mescouto, 2011;  [Perez, Endemann, Pessôa & Tomanari, 2015][perez]).
+A análise comportamental no campo de rastreamento de visão frequentemente demanda como dado bruto movimentos oculares categorizados de acordo com os estímulos, respostas e condições experimentais de interesse. Uma estratégia comum para produzi-los tem sido a categorização por meio de inspeção visual *post facto* dos vídeos produzidos por rastreadores. Tal trabalho tem sido feito com o auxílio de um programa de computador chamado *Video Frame Coder* ® ([Dube et al, 2010][dube]; [Huziwara, Souza & Tomanari, 2016][huziwara]; Mescouto, 2011; [Perez, Endemann, Pessôa & Tomanari, 2015][perez]), que, segundo os autores, "torna a tarefa viável".
 
-Esse método:
-   - consome muito tempo;
-   - é especialmente suscetível ao erro humano;
-   - é entediante intelectualmente;
-   - depende de um *software* fechado;
+Alguns problemas merecem ser destacados sobre esse método:
+
+- mesmo com o auxílio do software, ele consome muito tempo
+    - um vídeo com 50.000 quadros implica ~2 h de trabalho repetitivo;
+- é especialmente suscetível ao erro humano;
+   - aspecto intrínsico à inspeção visual;
+- é entediante;
+- depende de um *software* fechado;
+- o contexto aplicado demanda uma agilidade não contemplada por esse método;
 
 Como sofisticar esse processo tornando-o mais acessível? 
 
 ## Análise do comportamento e Rastreamento de Visão: a geração PUPIL.
 
-A plataforma PUPIL (https://pupil-labs.com; uma iniciativa da *Pupil Labs*, uma *startup* alemã fundada por M. Kassner, W. Patera e A. Bulling; ver [Kassner, Patera & Bulling, 2014][pupil]) é uma alternativa promissora, porque, até aonde o meu conhecimento pode ir, ela é a mais acessível e sustentável solução da atualidade:
+A plataforma PUPIL (https://pupil-labs.com; uma iniciativa da *Pupil Labs*, uma *startup* alemã fundada por M. Kassner, W. Patera e A. Bulling; ver [Kassner, Patera & Bulling, 2014][pupil]) apresenta-se como uma alternativa promissora. Até aonde o meu conhecimento pode ir, ela é a mais acessível e sustentável solução de rastreamento de visão da atualidade:
 
-   - baseia-se em *softwares* de análise e coleta 100% *open-source*;
-   - possui uma comunidade ativa;
-      - mais de 15 estudos publicados nos últimos 2 anos;
-   - possui farta documentação;
-      - para cientistas de dentro e de fora das ciências da computação;
-      - com base em minha própria experiência:
-         - estimo 3 meses de estudo para o operador iniciante antes da primeira coleta monocular (Dado bruto: pontos);
-         - estimo 6 meses de estudo para o operador iniciante antes da primeira coleta binocular (Dado bruto: vetores);
-   - está em pleno e estável desenvolvimento a mais de 4 anos;	
-   - permite investigações no campo do rastreamento de visão e visão egocêntrica;
-   - permite experimentos estacionários e em movimento;
-   - possui qualidade de dados aceitáveis para análises comportamentais;
-      - acurácia de 0.5 a 1.0 grau do ângulo de visão;
-      - precisão 0.08 grau;
-      - granularidade 30 hz a 120 hz;
-   - preço rasoável para uso não comercial em contexto acadêmico;
-      - você pode montar um Pupil Dev por $300;
-      - ou comprar um Pupil Pro (Monocular) €1050;
-   - etc.
+- baseia-se em *softwares* 100% *open-source*;
+- possui uma comunidade ativa;
+- tem tido considerável impacto no [campo acadêmico][pupil-citations];
+- possui farta documentação;
+   - para cientistas de dentro e de fora das ciências da computação;
+   - com base em minha própria experiência, considerando um aluno familiarizado com computadores:
+      - estimo 3 meses de estudo para o operador iniciante antes da primeira coleta monocular (Dado bruto: pontos);
+      - estimo 6 meses de estudo para o operador iniciante antes da primeira coleta binocular (Dado bruto: vetores);
+- está em pleno e estável desenvolvimento a mais de 4 anos;	
+- permite investigações no campo do rastreamento de visão e visão egocêntrica;
+- permite experimentos estacionários e em movimento;
+- possui qualidade de dados aceitáveis para análises comportamentais;
+   - acurácia de 0.5 a 1.0 grau do ângulo de visão;
+   - precisão 0.08 grau;
+   - granularidade 30 hz a 120 hz;
+- preço rasoável para uso não comercial em contexto acadêmico;
+   - você pode montar um Pupil Dev por $300 + tempo de construção;
+   - ou comprar um Pupil Pro (Monocular) €1050;
+- etc.
 
 É importante notar que, para fins de pesquisa científica, acessibilidade não se alinha necessariamente com extremo baixo custo ou consumo de massa. 
 
@@ -98,16 +102,22 @@ Destaco agora três aspectos da plataforma que foram especialmente úteis para o
 
 ### PUPIL: Transformações homográficas de superfícies de interesse
 
-- A plataforma PUPIL permite a detectação automática de superfícies (áreas de interesse) por meio de marcadores fiduciários. 
+- A plataforma PUPIL permite a detectação automática de superfícies (áreas de interesse) por meio de marcadores fiduciários. A detecção e a trasformação de perspetiva das superfícies é feita automaticamente.
 
 ### PUPIL: Plugins de Tempo de Execução
 
 - Facilmente adaptável por meio da linguagem Python;
-- afim de evitar potenciais distratores, optei por não usar os marcadores, a tela de apresentação dos estímulos como referência para as superfícies;
+- Porque a tarefa programada envolvia distratores, optei por evitar o uso dos marcadores fiduciários, pois eles poderiam funcionar também como distratores. Assim, o programa foi adaptado para utilizar a tela de apresentação dos estímulos como referência para as superfícies.
 
 ### PUPIL: Modelo 3D dos olhos
 
-- estabilidade na acurácia ao longo da coleta
+- A plataforma PUPIL possui um algoritmo de detecção ocular baseado na construção de um modelo 3D dos olhos do participante. Isto tanto permite grande estabilidade na acurácia ao longo da coleta de dados quanto permite uma calibragem mais ágil (~30 s).
+
+### PUPIL: um atalho para a aplicação.
+
+- A plataforma, por ser pouco obtrusiva e permitir tanto aplicações estacionárias quanto em movimento, permite avaliar prontamente técnicas e métodos análicos desenvolvidos no laboratório a problemas reais. Essa possibilidade se reduz com sistemas exclusivamente estacionários.
+
+- A cada nova atualização a plataforma torna-se cada vez mais *plug-and-play*. 
 
 ## Um micro-experimento comportamental
 
@@ -132,35 +142,86 @@ Identificar, por meio de inspeção visual, correlações entre movimentos ocula
 
 - Uma sala com ~640 LUX (lumens/m2). 
 - Pupil Dev, câmera frontal (30hz) e câmera do olho (30hz).
+- Um descanço para o queixo;
+- Um botão de respostas;
 - Dois computadores, um para o programa **Pupil Capture**, outro para o programa **Stimulus Control** (sincronização por meio de *sockets* TCP/IP).
 
 **Software**
 
-- O programa Pupil Capture registrava os movimentos oculares (pontos, x y) e gerenciava a calibragem do sistema.
+- O programa *Pupil Capture* registrava os movimentos oculares (pontos, x y) e gerenciava a calibragem do sistema.
 
-- Um plugin do Pupil Player adaptado por mim para detectar e realizar a transformação homográfica da tela de apresentação dos estímulos.
+- Um plugin do *Pupil Player* adaptado por mim para detectar e realizar a transformação homográfica da tela de apresentação dos estímulos.
 
-- O programa [Stimulus Control][stimulus-control] foi utilizado para o controle da apresentação dos estímulos. Ele é um programa de código livre (GPL3), uma versão modificada por mim do programa EAM (Emparelhamento ao modelo), desenvolvido por Drausio Capobianco.
+- O programa *[Stimulus Control][stimulus-control]* foi utilizado para o registro e controle da apresentação dos estímulos. Ele é um programa de código livre (GPL3), uma versão modificada por mim do programa EAM (Emparelhamento ao modelo), desenvolvido por Drausio Capobianco.
+
+Ele foi integrado com o programa Pupil Capture com objetivo de:
+
+- automatizar o início e parada da gravação dos movimentos oculares;
+- sincronização temporal eventos comportamentais e movimentos oculares registrados por um mesmo computador;
+- automatizar o início e parada do procedimento de calibragem*;
+- sincronização temporal de eventos comportamentais e movimentos oculares registrados por computadores distintos*;
+
+nota: * trabalho em curso.
 
 #### Análise de dados
 
-O algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn], foi utilizado para gerar duas categorias de movimentos oculares interesse (COI): esquerda e direita. O método é análogo, mas não idêntico, ao mapeamento de áreas de interesses (AOI).
+**DBSCAN**
 
-O programa *Stimulus Control* gerava eventos sincronizados com o início de cada uma das quatro cores de tal forma que, ao serem combinados com as categorias COI, permitiam a filtragem de resposta e movimentos oculares durante cada uma das cores (e suas diferentes combinações).
+Após tratar e exportar os movimentos oculares por meio da plataforma PUPIL, o algoritmo DBSCAN era usado para gerar duas categorias de interesse. Esquerda e direita.
 
-Ele foi integrado com o Pupil Capture com objetivo de:
-   - automatizar o início e parada da gravação dos movimentos oculares;
-   - sincronização local de eventos comportamentais e movimentos oculares registrados por um mesmo computador;
-   - automatizar o início e parada do procedimento de calibragem*;
-   - sincronização local de eventos por computadores distintos*;
+A estratégia assume uma condição que promova, ao menos inicialmente, movimentos oculares sobre todos os lugares nos quais os estímulos de interesse serão apresentados (posições).
 
-* trabalho em curso
+O algoritmo não exige o número total de estímulos utilizados, mas apenas dois critérios:
+
+- eps (perímetro de referência, e.g., distância euclidiana);
+- limite (número mínimo de ocorrências dentro perímetro de referência);
+
+As posições devem possuir um espaçamento maior do que o perímetro de referência.
+
+O método pode ser adaptado a diferentes tipos de movimento oculares e um número de estímulos limitado pelo tamanho da superfície de apresentação.
+
+**Segmentação temporal**
+
+Com as categorias de movimentos oculares em mãos, a taxa de movimentos oculares era calculada em cada um dos estímulos de maneira correspondente. Isto só era possível porque todos os eventos (movimentos oculares, respostas, início dos estímulos, etc.) recebiam um tempo extraido de um mesmo fluxo de tempo monotônico (Ver seção Análise de Dados). 
+
+O algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn], foi utilizado para gerar duas categorias de movimentos oculares de interesse (COI): esquerda e direita. O método é análogo, mas não idêntico, ao mapeamento de áreas de interesses (AOI).
+
+O programa *Stimulus Control* registrava os eventos comportamentais de maneira sincronizada com o programa *Pupil Capture*. Cada evento recebia um tempo extraido de um mesmo fluxo de tempo monotônico, implementado por meio da função `clock_gettime`, padrão em sistemas Linux (time.h). Assim, os eventos comportamentais eram combinados com as categorias COI e permitiam a filtragem de resposta e movimentos oculares durante cada uma das cores, de tal forma que eram calculadas oito taxas de movimentos oculares:
+
+- Quando apresentados Vermelho e Verde: 
+   1. taxa de movimentos oculares ao Vermelho
+   2. taxa de movimentos oculares ao Verde
+- Quando apresentados Vermelho e Ciano:
+   3. taxa de movimentos oculares ao Vermelho
+   4. taxa de movimentos oculares ao Verde 
+- Quando apresentados Azul e Verde:
+   5. taxa de movimentos oculares ao Azul
+   6. taxa de movimentos oculares ao Verde
+- Quando apresentados Azul e Ciano:
+   7. taxa de movimentos oculares ao Azul
+   8. taxa de movimentos oculares ao Ciano
+
+A taxa de respostas ao botão durante o estímulo vermelho e a taxa de respostas ao botão durante o estímulo azul também eram calculadas. Em seguida, os dados comportamentais e de movimento ocular eram graficados e comparados por meio de inspeção visual.
 
 #### Procedimento e Resultados
 
-Delineamento ABA. Os participantes recebiam a instrução: "A sua tarefa é ganhar pontos apertando o botão". Cada condição (A, B e A) durava 5 min e iniciava com a apresentação de dois estímulos igualmente espaçados em relação ao centro de uma tela, sendo um quadrado à esquerda (alternando sua cor entre vermelho e azul) e um círculo à direita (alternando sua cor entre verde e ciano). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente, com duração média de 15 s (mínimo 11, máximo 20). Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente.
+Delineamento ABA:
 
-Na condição A, vermelho e azul estavam associados a CRF, isto é, discriminações simples entre essas cores não eram possíveis. Na condição B, vermelho estava associado a CRF e azul à extinção, permitindo a ocorrência de discriminações simples. As cores verde e ciano não possuiam consequências programadas (distratores).
+- A: vermelho e azul estavam associados a CRF.
+- B: apenas vermelho estava associado a CRF.
+
+Vermelho e azul sempre à esquerda; verde e ciano sempre à direita (distratores). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente, com duração média de 15 s (mínimo 11, máximo 20). Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente, de acordo com a seguinte ordem de apresentação dos estímulos:
+
+- Vermelho + Verde
+- Vermelho + Ciano
+- Azul + Verde
+- Azul + Ciano
+
+#### Discussão
+
+#### Etapas seguintes
+
+ - Aplicar o método a uma tarefa com nove estímulos apresentados simultaneamente.
 
 ## Análise do comportamento e Rastreamento de Visão: a geração Aprendizado de Máquina?
 
@@ -199,6 +260,7 @@ Stephens, K. (2007, December 30). Behavioral Software Engineering [Blog]. Retrie
 [huziwara]: http://doi.org/10.1186/s41155-016-0010-3
 [arcas]:https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en
 [pupil]:http://doi.org/10.1145/2638728.2641695
+[pupil-citations]:https://docs.google.com/spreadsheets/d/1ZD6HDbjzrtRNB4VB0b7GFMaXVGKZYeI0zBOBEEPwvBI/edit?ts=576a3b27#gid=0
 [cogain]:http://wiki.cogain.org/index.php/Eye_Trackers
 [ester]:https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf
 [du-plessis]:http://doi.org/10.16910/9.4.6
