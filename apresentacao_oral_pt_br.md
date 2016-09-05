@@ -19,7 +19,7 @@ Este trabalho não seria possível sem o apoio da CAPES (Bolsa de doutorado ao p
 
 **tl;dr**
 
-Ao longo desta apresentação eu apresentarei um método automático de análise de dados comportamentais baseado em segmentação temporal e em um algoritmo (DBSCAN) de categorização amplamente reconhecido no campo da 'Descoberta de Conhecimento e Mineração de Dados'. Argumentarei que o uso plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos to tipo permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Em seguida, por meio de um micro-experimento, demonstrarei um sistema de rastreamento de visão em funcionamento por meio das referidas tecnologias. Por fim, deixarei a previsão de que o Aprendizado de Máquina, embora atualmente não tão acessível  quanto o método proposto, irá torná-lo obsoleto e pode ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas em diferentes meios.
+Ao longo desta apresentação eu apresentarei um método automático de análise de dados comportamentais baseado em segmentação temporal e em um algoritmo (DBSCAN) de categorização amplamente reconhecido no campo da 'Descoberta de Conhecimento e Mineração de Dados'. Argumentarei que o uso da plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos to tipo permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Em seguida, por meio de um micro-experimento, demonstrarei um sistema de rastreamento de visão em funcionamento por meio das referidas tecnologias. Por fim, deixarei a previsão de que o Aprendizado de Máquina, embora atualmente não tão acessível quanto o método proposto, irá torná-lo obsoleto e pode ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas em diferentes meios.
 
 **tl;rl**
 
@@ -78,10 +78,10 @@ A plataforma PUPIL (https://pupil-labs.com; uma iniciativa da *Pupil Labs*, uma 
 
 - baseia-se em *softwares* 100% *open-source*;
 - possui uma comunidade ativa;
-- tem tido considerável impacto no [campo acadêmico][pupil-citations];
+- tem tido notável impacto no [campo acadêmico][pupil-citations] com mais de 60 citações nos últimos 3 anos;
 - possui farta documentação;
    - para cientistas de dentro e de fora das ciências da computação;
-   - com base em minha própria experiência, considerando um aluno familiarizado com computadores:
+   - com base em minha própria experiência de aluno familiarizado com computadores:
       - estimo 3 meses de estudo para o operador iniciante antes da primeira coleta monocular (Dado bruto: pontos);
       - estimo 6 meses de estudo para o operador iniciante antes da primeira coleta binocular (Dado bruto: vetores);
 - está em pleno e estável desenvolvimento a mais de 4 anos;	
@@ -91,14 +91,14 @@ A plataforma PUPIL (https://pupil-labs.com; uma iniciativa da *Pupil Labs*, uma 
    - acurácia de 0.5 a 1.0 grau do ângulo de visão;
    - precisão 0.08 grau;
    - granularidade 30 hz a 120 hz;
-- preço rasoável para uso não comercial em contexto acadêmico;
+- possui um preço rasoável para uso não comercial em contexto acadêmico;
    - você pode montar um Pupil Dev por $300 + tempo de construção;
    - ou comprar um Pupil Pro (Monocular) €1050;
 - etc.
 
-É importante notar que, para fins de pesquisa científica, acessibilidade não se alinha necessariamente com extremo baixo custo ou consumo de massa. 
+É importante notar que, para fins de pesquisa científica, acessibilidade não se alinha necessariamente com extremo baixo custo ou consumo de massa. O mais importante é a documentação e as funcionalidades do sistema.
 
-Destaco agora três aspectos da plataforma que foram especialmente úteis para o sistema até então montado.
+Considerando as funcionalidades, destaco agora três aspectos da plataforma que foram especialmente úteis para o sistema até então montado.
 
 ### PUPIL: Transformações homográficas de superfícies de interesse
 
@@ -107,11 +107,11 @@ Destaco agora três aspectos da plataforma que foram especialmente úteis para o
 ### PUPIL: Plugins de Tempo de Execução
 
 - Facilmente adaptável por meio da linguagem Python;
-- Porque a tarefa programada envolvia distratores, optei por evitar o uso dos marcadores fiduciários, pois eles poderiam funcionar também como distratores. Assim, o programa foi adaptado para utilizar a tela de apresentação dos estímulos como referência para as superfícies.
+- Porque a tarefa programada que estarei apresentando envolvia distratores, optei por evitar o uso dos marcadores fiduciários, pois eles poderiam funcionar também como distratores. Assim, o programa foi adaptado para utilizar a tela de apresentação dos estímulos como referência para as superfícies.
 
 ### PUPIL: Modelo 3D dos olhos
 
-- A plataforma PUPIL possui um algoritmo de detecção ocular baseado na construção de um modelo 3D dos olhos do participante. Isto tanto permite grande estabilidade na acurácia ao longo da coleta de dados quanto permite uma calibragem mais ágil (~30 s).
+- A plataforma PUPIL possui um algoritmo de detecção ocular baseado na construção de um modelo 3D dos olhos do participante. Isto tanto permite grande estabilidade na acurácia ao longo do tempo quanto permite uma calibragem mais ágil (~30 s).
 
 ### PUPIL: um atalho para a aplicação.
 
@@ -121,11 +121,13 @@ Destaco agora três aspectos da plataforma que foram especialmente úteis para o
 
 ## Um micro-experimento comportamental
 
-Aprovado pelo comitê de ética (CAAE: 35142814.0.0000.5172).
+Este estudo foi aprovado pelo comitê de ética (CAAE: 35142814.0.0000.5172).
 
 ### Objetivo
 
-Identificar, por meio de inspeção visual, correlações entre movimentos oculares e o responder discriminativo em uma tarefa de discriminação simples sucessiva com estímulos distratores.  
+Identificar correlações entre movimentos oculares e o responder discriminativo em uma tarefa de discriminação simples sucessiva com estímulos distratores.
+
+Na medida em que um responder discriminativo ocorresse, se esperava que o comportamento ocular tenderia para a esquerda, local no qual os estímulos relevantes eram apresentados.   
 
 ### Método
 #### Participantes
@@ -167,33 +169,31 @@ nota: * trabalho em curso.
 
 **DBSCAN**
 
-Após tratar e exportar os movimentos oculares por meio da plataforma PUPIL, o algoritmo DBSCAN era usado para gerar duas categorias de interesse. Esquerda e direita.
+Após tratar e exportar os movimentos oculares por meio da plataforma PUPIL, O algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn], era utilizado para gerar duas categorias de movimentos oculares de interesse (COI): esquerda e direita. O método é análogo, mas não idêntico, ao mapeamento de áreas de interesses (AOI).
 
-A estratégia assume uma condição que promova, ao menos inicialmente, movimentos oculares sobre todos os lugares nos quais os estímulos de interesse serão apresentados (posições).
+A estratégia adotada assumia uma condição que promovia, ao menos inicialmente, movimentos oculares sobre todos os lugares nos quais os estímulos de interesse seriam apresentados (isto é, em todas as posições ou áreas de interesse).
 
 O algoritmo não exige o número total de estímulos utilizados, mas apenas dois critérios:
 
-- eps (perímetro de referência, e.g., distância euclidiana);
-- limite (número mínimo de ocorrências dentro perímetro de referência);
+- eps (perímetro de referência, e.g., distância euclidiana máxima);
+- um número mínimo de ocorrências dentro do perímetro de referência (isto é, uma densidade mínima);
 
-As posições devem possuir um espaçamento maior do que o perímetro de referência.
+As posições reais dos estímulos devem possuir um espaçamento maior do que o perímetro de referência adotado. Deve-se levar em conta a precição do sistema de rastreamento; 1.5 graus do ângulo de visão pode bastar.
 
-O método pode ser adaptado a diferentes tipos de movimento oculares e um número de estímulos limitado pelo tamanho da superfície de apresentação.
+O método pode ser adaptado a diferentes tipos de movimento oculares e a um número de estímulos limitado pelo tamanho da superfície de apresentação.
 
 **Segmentação temporal**
 
-Com as categorias de movimentos oculares em mãos, a taxa de movimentos oculares era calculada em cada um dos estímulos de maneira correspondente. Isto só era possível porque todos os eventos (movimentos oculares, respostas, início dos estímulos, etc.) recebiam um tempo extraido de um mesmo fluxo de tempo monotônico (Ver seção Análise de Dados). 
+Com as categorias de movimentos oculares em mãos, a taxa de movimentos oculares era calculada em cada um dos estímulos apresentados. Isto só era possível porque todos os eventos (movimentos oculares, respostas, início dos estímulos, etc.) recebiam um tempo extraido de um mesmo fluxo de tempo monotônico, implementado por meio da função `clock_gettime`, padrão em sistemas Linux (time.h).
 
-O algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn], foi utilizado para gerar duas categorias de movimentos oculares de interesse (COI): esquerda e direita. O método é análogo, mas não idêntico, ao mapeamento de áreas de interesses (AOI).
-
-O programa *Stimulus Control* registrava os eventos comportamentais de maneira sincronizada com o programa *Pupil Capture*. Cada evento recebia um tempo extraido de um mesmo fluxo de tempo monotônico, implementado por meio da função `clock_gettime`, padrão em sistemas Linux (time.h). Assim, os eventos comportamentais eram combinados com as categorias COI e permitiam a filtragem de resposta e movimentos oculares durante cada uma das cores, de tal forma que eram calculadas oito taxas de movimentos oculares:
+O programa *Stimulus Control* registrava esse tempo nos eventos comportamentais de maneira sincronizada com o programa *Pupil Capture* que por sua vez registrava esse tempo nos eventos oculares. Assim, os eventos comportamentais eram combinados com as categorias COI e permitiam a filtragem de resposta e movimentos oculares durante cada uma das cores apresentadas, de tal forma que oito taxas de movimentos oculares eram calculadas:
 
 - Quando apresentados Vermelho e Verde: 
    1. taxa de movimentos oculares ao Vermelho
    2. taxa de movimentos oculares ao Verde
 - Quando apresentados Vermelho e Ciano:
    3. taxa de movimentos oculares ao Vermelho
-   4. taxa de movimentos oculares ao Verde 
+   4. taxa de movimentos oculares ao Ciano 
 - Quando apresentados Azul e Verde:
    5. taxa de movimentos oculares ao Azul
    6. taxa de movimentos oculares ao Verde
@@ -203,22 +203,23 @@ O programa *Stimulus Control* registrava os eventos comportamentais de maneira s
 
 A taxa de respostas ao botão durante o estímulo vermelho e a taxa de respostas ao botão durante o estímulo azul também eram calculadas. Em seguida, os dados comportamentais e de movimento ocular eram graficados e comparados por meio de inspeção visual.
 
-#### Procedimento e Resultados
+#### Procedimento 
 
 Delineamento ABA:
 
 - A: vermelho e azul estavam associados a CRF.
 - B: apenas vermelho estava associado a CRF.
 
-Vermelho e azul sempre à esquerda; verde e ciano sempre à direita (distratores). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente, com duração média de 15 s (mínimo 11, máximo 20). Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente, de acordo com a seguinte ordem de apresentação dos estímulos:
+Vermelho e azul sempre à esquerda; verde e ciano sempre à direita (distratores). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente, com duração média de 15 s (mínimo 11, máximo 20). Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente, de acordo com a seguinte ordem de apresentação:
 
 - Vermelho + Verde
 - Vermelho + Ciano
-- Azul + Verde
 - Azul + Ciano
+- Azul + Verde
 
-#### Discussão
+#### Resultados
 
+- nas pastas de cada participante
 #### Etapas seguintes
 
  - Aplicar o método a uma tarefa com nove estímulos apresentados simultaneamente.
