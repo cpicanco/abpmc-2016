@@ -4,7 +4,7 @@ ___
 
 Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica.
 
-Carlos Rafael Fernandes Picanço & François Jacques Tonneau.
+Carlos Rafael Fernandes Picanço & François Jacques Tonneau.   
 Universidade Federal do Pará, Belém, PA, Brasil.
 
 **Resumo**
