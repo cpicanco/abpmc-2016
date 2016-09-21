@@ -1,4 +1,4 @@
-Picanço, C. R. F., & Tonneau, F. J. (2016). Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica. Em Anais do XXV Encontro Brasileiro de Psicologia e Medicina Comportamental. Foz do Iguaçu, Brasil. Retrieved from http://encontroabpmc2016.com.br/programacao/
+Picanço, C. R. F., & Tonneau, F. J. (2016). Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica. In Anais do XXV Encontro Brasileiro de Psicologia e Medicina Comportamental. Foz do Iguaçu, Brasil. Retrieved from http://encontroabpmc2016.com.br/programacao/
 ___
 
 Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica.
