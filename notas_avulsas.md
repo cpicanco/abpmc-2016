@@ -54,3 +54,23 @@ Sistemas comerciais (**CITAR**) e outros sistemas abertos (**CITAR**) não possu
 - possui um preço rasoável para uso não comercial em contexto acadêmico;
    - você pode montar um Pupil Dev por $300 + tempo de construção;
    - ou comprar um Pupil Pro (Monocular) €1050;
+
+## Referências
+Du Plessis, J. P., & Blignaut, P. (2016). Utilising the GPU to develop a high-speed, low-cost eye tracker. Journal of Eye Movement Research, 9(4), 1:11. http://doi.org/10.16910/9.4.6
+
+Harrison, W. (2005). Skinner Wasn’t a Software Engineer. *IEEE Software*, *22*(3), 5–7. http://doi.org/10.1109/MS.2005.76
+
+Lenberg, P., Feldt, R., & Wallgren, L. G. (2015). Behavioral Software Engineering: a Definiton and Systematic Literature Review. *Journal of Systems and Software*, *107*, 15 – 37. http://doi.org/doi:10.1016/j.jss.2015.04.084
+
+Reimer, D. (2016). The Future of Behavior Analysis: Why we need to Diversify, Part I. Retrieved from http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
+
+Stephens, K. (2007, December 30). Behavioral Software Engineering [Blog]. Retrieved from http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
+
+[pupil-citations]:https://docs.google.com/spreadsheets/d/1ZD6HDbjzrtRNB4VB0b7GFMaXVGKZYeI0zBOBEEPwvBI/edit?ts=576a3b27#gid=0
+[cogain]:http://wiki.cogain.org/index.php/Eye_Trackers
+[du-plessis]:http://doi.org/10.16910/9.4.6
+[harrison]:http://doi.org/10.1109/MS.2005.76
+[gundlach]:https://www.researchgate.net/publication/26333272_Psychology_as_science_and_as_discipline_the_case_of_Germany
+[lenberg]:http://doi.org/doi:10.1016/j.jss.2015.04.084
+[reimer]:http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
+[stephens]:http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
