@@ -5,11 +5,11 @@ Universidade Federal do Pará, Belém, PA, Brasil.
 
 Este trabalho não seria possível sem o apoio da CAPES (Bolsa de doutorado ao primeiro autor).
 
-Ao longo desta apresentação eu apresentarei um método automático de análise de dados comportamentais baseado em segmentação temporal e em um algoritmo (DBSCAN) de categorização amplamente reconhecido no campo da 'Descoberta de Conhecimento e Mineração de Dados'. Argumentarei que o uso da plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos to tipo permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Friso, e antecipo aos senhores e senhoras, que tal argumento não deve ser confundido com a mera divulgação de um produto, ao contrário, deve ser entendido como um esforço no sentido de promover o movimento de código aberto e ciência aberta em nosso campo. Em seguida, por meio de um micro-experimento, demonstrarei um sistema de rastreamento de visão em funcionamento por meio das referidas tecnologias. Por fim, deixarei a previsão de que o Aprendizado de Máquina, embora atualmente não tão acessível quanto o método proposto, irá torná-lo obsoleto e pode vir a ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas em diferentes meios.
+Ao longo desta apresentação eu apresentarei um método automático de análise de dados comportamentais baseado em segmentação temporal e em um algoritmo (DBSCAN) de categorização amplamente reconhecido no campo da 'Descoberta de Conhecimento e Mineração de Dados'. Argumentarei que o uso da plataforma PUPIL de rastreamento de visão conjuntamente com algoritmos to tipo permite abandonar (ou ao menos reduzir o uso de) um despendioso e entediante método; a saber, a categorização por inspeção visual, quadro-a-quadro, dos vídeos produzidos por rastreadores de visão. Argumentarei, também, que a plataforma PUPIL é a mais acessível da atualidade a pesquisadores fora das ciências da computação interessados em visão computacional. Friso, e antecipo aos senhores e senhoras, que tal argumento não deve ser confundido com a mera divulgação de um produto, ao contrário, deve ser entendido como um esforço no sentido de promover o movimento de código aberto e ciência aberta em nosso campo. Em seguida, por meio de um micro-experimento, demonstrarei um sistema de rastreamento de visão em funcionamento por meio das referidas tecnologias. Por fim, deixarei a previsão de que a detecção automática em tempo real por meio de máquinas treinadas, embora atualmente não tão acessível quanto o método proposto, irá torná-lo obsoleto e pode vir a ser uma solução última e definitiva para trabalhos futuros de categorização de estímulos e respostas em diferentes meios.
 
 ## Análise do comportamento e Rastreamento de Visão: a geração *Video Frame Coder* ®.
 
-A análise comportamental no campo de rastreamento de visão frequentemente demanda como dado bruto movimentos oculares categorizados de acordo com os estímulos, respostas e condições experimentais de interesse. Uma estratégia comum (ver [Dube et al, 2010][dube]; [Huziwara, Souza & Tomanari, 2016][huziwara]; Mescouto, 2011; [Perez, Endemann, Pessôa & Tomanari, 2015][perez])para produzi-los tem sido a categorização por meio de inspeção visual *post facto* dos vídeos produzidos por rastreadores. Tal trabalho tem sido feito com o auxílio de um programa de computador chamado *Video Frame Coder* ® , que, segundo os autores, "torna a tarefa viável".
+A análise comportamental no campo de rastreamento de visão frequentemente demanda como dado bruto movimentos oculares categorizados de acordo com os estímulos, respostas e condições experimentais de interesse. Uma estratégia comum (ver [Dube et al, 2010][dube]; [Huziwara, Souza & Tomanari, 2016][huziwara]; Mescouto, 2011; [Perez, Endemann, Pessôa & Tomanari, 2015][perez]) para produzi-los tem sido a categorização por meio de inspeção visual *post facto* dos vídeos produzidos por rastreadores. Tal trabalho tem sido feito com o auxílio de um programa de computador chamado *Video Frame Coder* ® , que, segundo os autores, "torna a tarefa viável".
 
 Alguns problemas merecem ser destacados sobre esse método. Primeiro, mesmo com o auxílio daquele programa de computador, trata-se de um método que consome muito tempo; um vídeo com 50.000 quadros implica ~2 h de trabalho repetitivo. Segundo, ele é especialmente suscetível ao erro humano; um aspecto intrínsico à inspeção visual. Terceiro, é plausível sugerir que é um método entediante e não provê reforçadores intrínsicos ao exercício científico. Quarto, o método depende de um *software* fechado; os cientistas interessados em um maior escrutínio do método não teriam acesso aos meios para tanto. Quinto, a categorização é feita por meio de critérios difíceis de serem operacionalizados; um maior rigor poderia ser alcançado por meio de concordância entre os categorizadores, mas isso implica um maior custo. Por fim, sugere-se que o contexto aplicado demanda uma agilidade não contemplada por esse método.
 
@@ -38,27 +38,6 @@ A plataforma possui um algoritmo de detecção ocular baseado na construção de
 ### PUPIL: um atalho para a aplicação?
 
 A plataforma permite pronta adaptação de técnicas e métodos análicos desenvolvidos no laboratório ao contexto aplicado. Essa portabilidade se reduz com sistemas exclusivamente estacionários.
-
-### PUPIL: notas avulsas.
-
-Sistemas comerciais (**CITAR**) e outros sistemas abertos (**CITAR**) não possuem comparável acessibilidade, seja porque não fornecem funcionalidades, seja porque não forcenem um ambiente de código aberto tanto no contexto de coleta quanto no contexto de análise de dados, pós coleta. Argumenta-se, portanto, que a plataforma PUPIL é a mais acessível da atualidade para pesquisas analítico comportamentais em conformidade com padrões de ciência aberta.
-
-- possui uma comunidade ativa e está em pleno e estável desenvolvimento a mais de 4 anos;
-- tem tido notável impacto no [campo acadêmico][pupil-citations] com mais de 60 citações nos últimos 3 anos;
-- possui farta documentação;
-   - para cientistas de dentro e de fora das ciências da computação;
-   - com base em minha própria experiência de aluno familiarizado com computadores:
-      - estimo 3 meses de estudo para o operador iniciante antes da primeira coleta monocular (Dado bruto: pontos);
-      - estimo 6 meses de estudo para o operador iniciante antes da primeira coleta binocular (Dado bruto: vetores);
-- permite investigações no campo do rastreamento de visão e visão egocêntrica;
-- permite experimentos estacionários e em movimento;
-- possui qualidade de dados aceitáveis para análises comportamentais;
-   - acurácia de 0.5 a 1.0 grau do ângulo de visão;
-   - precisão 0.08 grau;
-   - granularidade 30 hz a 120 hz;
-- possui um preço rasoável para uso não comercial em contexto acadêmico;
-   - você pode montar um Pupil Dev por $300 + tempo de construção;
-   - ou comprar um Pupil Pro (Monocular) €1050;
 
 ## DBSCAN: uma rápida introdução.
 
@@ -101,15 +80,13 @@ Mudanças no padrão de movimentos oculares entre as condições A e B não fora
 
 Aplicar o método a uma tarefa com nove estímulos apresentados simultaneamente e explorar métodos computacionais com o objetivo de automatizar a inspeção visual dos dados.
 
-- Otimização não assistida de densidade do DBSCAN.
+- Otimização não assistida dos parâmetros de densidade do DBSCAN.
 
 ## Análise do comportamento e Rastreamento de Visão: a geração Aprendizado de Máquina?
 
-A detecção automática e em tempo real (ver [Arcas, 2016][arcas]) de eventos por meio de máquinas treinadas para isso tornará o método apresentado obsoleto.
+A detecção automática e em tempo real de eventos por meio de máquinas treinadas para isso tornará o método apresentado obsoleto.
 
 ## Referências
-
-Arcas, B. A. (2016, May). How computers are learning to be creative. Filmed presented at the TED@BCG Paris, Paris. Retrieved from https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en
 
 Dube, W. V., Dickson, C. A., Balsamo, L. M., O’Donnell, K. L., Tomanari, G. Y., Farren, K. M., … McIlvane, W. J. (2010). Observing Behavior and Atypically Restricted Stimulus Control. *Journal of the Experimental Analysis of Behavior*, *94*(3), 297–313. http://doi.org/10.1901/jeab.2010.94-297
 
@@ -117,11 +94,7 @@ Ester, M., Kriegel, H.-P., Sander, J., & Xu, X. (1996). A density-based algorith
 
 Kassner, M., Patera, W., & Bulling, A. (2014). Pupil: an open source platform for pervasive eye tracking and mobile gaze-based interaction. In Proceedings of the 2014 ACM International Joint Conference on Pervasive and Ubiquitous Computing: Adjunct Publication (pp. 1151–1160). Seattle, United States: ACM Press. http://doi.org/10.1145/2638728.2641695
 
-Lenberg, P., Feldt, R., & Wallgren, L. G. (2015). Behavioral Software Engineering: a Definiton and Systematic Literature Review. *Journal of Systems and Software*, *107*, 15 – 37. http://doi.org/doi:10.1016/j.jss.2015.04.084
-
 Mescouto, W. de A. (2011). Efeitos de contingências e instruções sobre respostas de escolha e de movimento dos olhos durante o estabelecimento de discriminações simples simultâneas (Dissertação de mestrado). Universidade Federal do Pará, Belém, PA, Brasil.
-
-Harrison, W. (2005). Skinner Wasn’t a Software Engineer. *IEEE Software*, *22*(3), 5–7. http://doi.org/10.1109/MS.2005.76
 
 Huziwara, E. M., de Souza, D. das G., & Tomanari, G. Y. (2016). Patterns of eye movement in matching-to-sample tasks. *Psicologia: Reflexão E Crítica*, *29*(1). http://doi.org/10.1186/s41155-016-0010-3
 
@@ -129,25 +102,11 @@ Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O.,
 
 Perez, W. F., Endemann, P., Pessôa, C. V. B. B., & Tomanari, G. Y. (2015). Assessing Stimulus Control in a Discrimination Task with Compound Stimuli: Evaluating Testing Procedures and Tracking Eye Fixations. *The Psychological Record*, *65*(1), 83–88. http://doi.org/10.1007/s40732-014-0092-1
 
-Du Plessis, J. P., & Blignaut, P. (2016). Utilising the GPU to develop a high-speed, low-cost eye tracker. Journal of Eye Movement Research, 9(4), 1:11. http://doi.org/10.16910/9.4.6
-
-Reimer, D. (2016). The Future of Behavior Analysis: Why we need to Diversify, Part I. Retrieved from http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
-
-Stephens, K. (2007, December 30). Behavioral Software Engineering [Blog]. Retrieved from http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
-
 [dube]:http://doi.org/10.1901/jeab.2010.94-297
 [perez]:http://doi.org/10.1007/s40732-014-0092-1
 [huziwara]: http://doi.org/10.1186/s41155-016-0010-3
-[arcas]:https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en
 [pupil]:http://doi.org/10.1145/2638728.2641695
 [pupil-citations]:https://docs.google.com/spreadsheets/d/1ZD6HDbjzrtRNB4VB0b7GFMaXVGKZYeI0zBOBEEPwvBI/edit?ts=576a3b27#gid=0
-[cogain]:http://wiki.cogain.org/index.php/Eye_Trackers
 [ester]:https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf
-[du-plessis]:http://doi.org/10.16910/9.4.6
 [scikit-learn]:http://dl.acm.org/citation.cfm?id=1953048.2078195
-[harrison]:http://doi.org/10.1109/MS.2005.76
-[gundlach]:https://www.researchgate.net/publication/26333272_Psychology_as_science_and_as_discipline_the_case_of_Germany
-[lenberg]:http://doi.org/doi:10.1016/j.jss.2015.04.084
-[reimer]:http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
-[stephens]:http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
 [stimulus-control]:https://github.com/cpicanco/stimulus_control
