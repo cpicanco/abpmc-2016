@@ -56,15 +56,15 @@ O objetivo, dessa forma, era identificar correlações entre movimentos oculares
 
 #### Equipamento
 
-O estudo era conduzido em uma sala com iluminação não controlada entre 300 e 640 LUX (lumens/m2). Os movimentos oculares eram capturados por meio do rastreador ocular Pupil Dev, que possui uma câmera frontal e uma câmera ocular, ambas com 30hz. Uma tela de apresentação era projetada em uma das paredes da sala e um descanço para o queixo planejado ergonomicamente para se adequar a postura natural dos participantes assegurava que a tela sempre estava no campo de gravação da câmera frontal. O projetor e um botão de respostas ambidestro estavam conectados a um computador executando o programa *[Stimulus Control][stimulus-control]*. O programa registra as respostas ao botão e controlava a apresentação de estímulos de maneira sincronizada (por meio de *sockets* TCP/IP) com o programa Pupil Capture, que por sua vez registrava os movimentos oculares e controlava a calibragem do rastreador. Posteriormente a coleta, o programa *Pupil Player* detectava a tela de apresentação dos estímulos e permitia exportar os dados para categorização por meio do algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn]. A implementação da categorização foi escrita na linguagem Python (**O código está em outro repositório, mas será incluido posteriormente neste repositório**).
+O estudo era conduzido em uma sala com iluminação não controlada entre 300 e 640 LUX (lumens/m2). Os movimentos oculares eram capturados por meio do rastreador ocular Pupil Dev, que possui uma câmera frontal e uma câmera ocular, ambas com 30hz. Uma tela de apresentação era projetada em uma das paredes da sala e um descanço para o queixo planejado ergonomicamente para se adequar a postura natural dos participantes assegurava que a tela sempre estava no campo de gravação da câmera frontal. O projetor e um botão de respostas ambidestro estavam conectados a um computador executando o programa *[Stimulus Control][stimulus-control]*. O programa registra as respostas ao botão e controlava a apresentação de estímulos de maneira sincronizada (por meio de *sockets* TCP/IP) com o programa Pupil Capture, que por sua vez registrava os movimentos oculares e controlava a calibragem do rastreador. Posteriormente a coleta, o programa *Pupil Player* detectava a tela de apresentação dos estímulos e permitia exportar os dados para categorização por meio do algoritmo DBSCAN ([Ester et al, 1996][ester]), tal como implementado por [Pedregosa et al, 2011][scikit-learn]. A implementação da categorização utilizou a linguagem Python.
 
 #### Procedimento e Análise de dados
 
-Com as categorias de movimentos oculares em mãos, a taxa de movimentos oculares era calculada em cada um dos estímulos apresentados. Isso só era possível porque todos os eventos de interesse (isto é, movimentos oculares, respostas, início dos estímulos, etc.) recebiam um tempo extraido de um mesmo fluxo de tempo monotônico. Nós chamamos isso de segmentação temporal, ilustrada por meio dos cubos e eventos na Figura 1. A taxa de respostas ao botão durante o estímulo vermelho e o estímulo azul também eram calculadas.
+Com as categorias de movimentos oculares em mãos, a taxa de movimentos oculares era calculada em cada um dos estímulos apresentados. Isso só era possível porque todos os eventos de interesse (isto é, movimentos oculares, respostas, início dos estímulos, etc.) recebiam um tempo extraido de um mesmo fluxo de tempo monotônico. Os eventos permitiam a segmentação temporal das respostas ao botão e movimentos oculares. A taxa de respostas ao botão durante o estímulo vermelho e durante o estímulo azul também eram calculadas.
 
-Um delineamento ABA era apresentado. Na condição A, vermelho e azul estavam associados a CRF. Na condição B, apenas vermelho estava associado a CRF, o que permitia a ocorrência de discriminações.
+Um delineamento ABA era apresentado. Na condição A, vermelho e azul estavam associados a CRF (pressionar uma vez o botão produzia um som associado a dinheiro). Na condição B, apenas vermelho estava associado a CRF, o que permitia a ocorrência de discriminações.
 
-Vermelho e azul sempre eram apresentados à esquerda; verde e ciano sempre à direita (distratores). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente. Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente, de acordo com a ordem temporal apresentada nas Figuras 1,2, 3 e 4.
+Vermelho e azul sempre eram apresentados à esquerda; verde e ciano sempre à direita (distratores). Controle por aspectos temporais eram evitados com a alternância de cores aleatoriamente. Note, embora aleatoriamente, as cores se alternavam sempre sucessivamente, nunca simultaneamente, da seguinte maneira: Vermelho e Verde, Vermelho e Ciano, Azul e Ciano, Azul e Verde.
 
 #### Resultados
 
@@ -72,7 +72,7 @@ Um responder discriminativo foi observado no desempenho de sete dos dez particip
 
 Mudanças no padrão de movimentos oculares entre as condições A e B não foram observadas no desempenho dos três participantes que não responderam discriminativamente.
 
-Figuras e dados disponíveis em https://github.com/cpicanco/abpmc-2016.
+Figuras e dados brutos disponíveis em https://github.com/cpicanco/abpmc-2016.
 
 #### Discussão
 
