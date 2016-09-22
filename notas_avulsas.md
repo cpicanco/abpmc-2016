@@ -22,7 +22,7 @@ Segundo, construir pode não parecer uma opção das mais viáveis para os cient
 
 ### Solução 1 - Construa!
 
-Mas e se a questão for um falso dilema? Um primeira solução seria: pode ser sábio construir, como aquele querido professor já havia sugerido. Por exemplo, um *software* livre para experimentos comportamentais pode contribuir como um nicho de diversificação da análise do comportamento (Reimer, 2016). É importante notar que a engenharia de *softwares* comportamentais é uma área recente no escopo das ciências da computação ([Lenberg, 2015][lenberg]), ainda que possa ser vista com saudosismo por alguns analistas do comportamento ([Stephens, 2007][stephens]). É notável, também, que interfaces entre ciências da computação e análise do comportamento já tenham sido feitas no campo da educação técnica ([Harrison, 2005][harrison]).
+Mas e se a questão for um falso dilema? Um primeira solução seria: pode ser sábio construir, como aquele querido professor já havia sugerido. Por exemplo, um *software* livre para experimentos comportamentais pode contribuir como um nicho de diversificação da análise do comportamento ([Reimer, 2016][reimer]). É importante notar que a engenharia de *softwares* comportamentais é uma área recente no escopo das ciências da computação ([Lenberg, 2015][lenberg]), ainda que possa ser vista com saudosismo por alguns analistas do comportamento ([Stephens, 2007][stephens]). É notável, também, que interfaces entre ciências da computação e análise do comportamento já tenham sido feitas no campo da educação técnica ([Harrison, 2005][harrison]).
 
 ### Solução 2 - Colabore!
 
