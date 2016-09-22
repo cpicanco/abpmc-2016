@@ -92,11 +92,7 @@ Ester, M., Kriegel, H.-P., Sander, J., & Xu, X. (1996). A density-based algorith
 
 Kassner, M., Patera, W., & Bulling, A. (2014). Pupil: an open source platform for pervasive eye tracking and mobile gaze-based interaction. In Proceedings of the 2014 ACM International Joint Conference on Pervasive and Ubiquitous Computing: Adjunct Publication (pp. 1151–1160). Seattle, United States: ACM Press. http://doi.org/10.1145/2638728.2641695
 
-Lenberg, P., Feldt, R., & Wallgren, L. G. (2015). Behavioral Software Engineering: a Definiton and Systematic Literature Review. *Journal of Systems and Software*, *107*, 15 – 37. http://doi.org/doi:10.1016/j.jss.2015.04.084
-
 Mescouto, W. de A. (2011). Efeitos de contingências e instruções sobre respostas de escolha e de movimento dos olhos durante o estabelecimento de discriminações simples simultâneas (Dissertação de mestrado). Universidade Federal do Pará, Belém, PA, Brasil.
-
-Harrison, W. (2005). Skinner Wasn’t a Software Engineer. *IEEE Software*, *22*(3), 5–7. http://doi.org/10.1109/MS.2005.76
 
 Huziwara, E. M., de Souza, D. das G., & Tomanari, G. Y. (2016). Patterns of eye movement in matching-to-sample tasks. *Psicologia: Reflexão E Crítica*, *29*(1). http://doi.org/10.1186/s41155-016-0010-3
 
@@ -104,24 +100,10 @@ Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O.,
 
 Perez, W. F., Endemann, P., Pessôa, C. V. B. B., & Tomanari, G. Y. (2015). Assessing Stimulus Control in a Discrimination Task with Compound Stimuli: Evaluating Testing Procedures and Tracking Eye Fixations. *The Psychological Record*, *65*(1), 83–88. http://doi.org/10.1007/s40732-014-0092-1
 
-Du Plessis, J. P., & Blignaut, P. (2016). Utilising the GPU to develop a high-speed, low-cost eye tracker. Journal of Eye Movement Research, 9(4), 1:11. http://doi.org/10.16910/9.4.6
-
-Reimer, D. (2016). The Future of Behavior Analysis: Why we need to Diversify, Part I. Retrieved from http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
-
-Stephens, K. (2007, December 30). Behavioral Software Engineering [Blog]. Retrieved from http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
-
 [dube]:http://doi.org/10.1901/jeab.2010.94-297
 [perez]:http://doi.org/10.1007/s40732-014-0092-1
 [huziwara]: http://doi.org/10.1186/s41155-016-0010-3
 [pupil]:http://doi.org/10.1145/2638728.2641695
-[pupil-citations]:https://docs.google.com/spreadsheets/d/1ZD6HDbjzrtRNB4VB0b7GFMaXVGKZYeI0zBOBEEPwvBI/edit?ts=576a3b27#gid=0
-[cogain]:http://wiki.cogain.org/index.php/Eye_Trackers
 [ester]:https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf
-[du-plessis]:http://doi.org/10.16910/9.4.6
 [scikit-learn]:http://dl.acm.org/citation.cfm?id=1953048.2078195
-[harrison]:http://doi.org/10.1109/MS.2005.76
-[gundlach]:https://www.researchgate.net/publication/26333272_Psychology_as_science_and_as_discipline_the_case_of_Germany
-[lenberg]:http://doi.org/doi:10.1016/j.jss.2015.04.084
-[reimer]:http://www.baquarterly.com/2016/01/the-future-of-behavior-analysis-why-we-need-to-diversify-part-i/
-[stephens]:http://bbs-software.blogspot.com.br/2007/12/behavioral-software-engineering.html
 [stimulus-control]:https://github.com/cpicanco/stimulus_control
