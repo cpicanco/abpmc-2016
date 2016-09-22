@@ -4,7 +4,7 @@
 
 Atualmente, [diferentes empresas][cogain] vendem rastreadores que atendem a diferentes públicos alvo, desde aqueles de baixo custo para desenvolvedores de jogos (e.g., https://theeyetribe.com/), até aqueles com altas especificações para pesquisas científicas onde o tempo é uma variável crítica (e.g., [Du Plessis, 2016][du-plessis]). Um saudoso e querido professor (José Carlos Martins Fontes, o Zé Carlos) uma vez me disse: "Se você tem o dinheiro, compre. Se não, construa." Bem, eu frequentemente não tenho o dinheiro.
 
-Para a minha felicidade, entranto, hoje se você sabe o básico sobre soldagem SMD, eletrônica e possui o tempo necessário para importar peças do exterior, você pode optar por montar seu próprio rastreador. No meu caso, todo o processo de pesquisa preliminar, importação e montagem inicial durou três meses. De fato, na atualidade, montar ou comprar um *hardware* é o menor dos problemas no campo das pesquisas científicas sobre rastreamento de visão.
+Mas hoje, para a minha felicidade, se você sabe o básico sobre soldagem SMD, eletrônica e possui o tempo necessário para importar peças do exterior, você pode optar por montar seu próprio rastreador. No meu caso, todo o processo de pesquisa preliminar, importação e montagem inicial durou três meses. De fato, na atualidade, montar ou comprar um *hardware* é o menor dos problemas no campo das pesquisas científicas sobre rastreamento de visão.
 
 ### Software
 
