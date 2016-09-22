@@ -1,6 +1,6 @@
 Resumo expandido referente ao trabalho "Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica". XXV Encontro Brasileiro de Psicologia e Medicina Comportamental, 2016, Foz do Iguaçu, Brasil.
 
-Carlos Rafael Fernandes Picanço.
+Carlos Rafael Fernandes Picanço.   
 Universidade Federal do Pará, Belém, PA, Brasil.
 
 Este trabalho não seria possível sem o apoio da CAPES (Bolsa de doutorado ao autor).
