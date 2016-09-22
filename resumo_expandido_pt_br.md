@@ -68,7 +68,7 @@ Vermelho e azul sempre eram apresentados à esquerda; verde e ciano sempre à di
 
 #### Resultados
 
-Um responder discriminativo foi observado no desempenho de sete dos dez participantes deste estudo. Dentre desempenhos discriminativos, três deles envolveram movimentos oculares de acordo com a predição, isto é, foi observada uma tendência de olhares à esquerda na condição B em contraste com os olhares à direita e à esquerda na condição A. Embora apenas trẽs participantes tenham demonstrado um desempenho de acordo com a previsão, foram observadas mudanças no padrão de movimentos oculares durante a condição B com outros dois participantes. Ou seja, foram observadas mudanças no padrão de movimentos oculares entre as condições A e B com cinco daqueles sete participantes.
+Um responder discriminativo foi observado no desempenho de sete dos dez participantes deste estudo considerando as respostas ao botão. Dentre esses desempenhos discriminativos, três deles envolveram movimentos oculares de acordo com a predição, isto é, foi observada uma tendência de olhares à esquerda na condição B em contraste com olhares à direita e à esquerda na condição A. Embora apenas três participantes tenham demonstrado um desempenho de acordo com a previsão, foram observadas mudanças no padrão de movimentos oculares durante a condição B com outros dois participantes. Ou seja, foram observadas mudanças no padrão de movimentos oculares entre as condições A e B com cinco daqueles sete participantes.
 
 Mudanças no padrão de movimentos oculares entre as condições A e B não foram observadas no desempenho dos três participantes que não responderam discriminativamente.
 
