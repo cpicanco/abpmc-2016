@@ -8,7 +8,8 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-# plot timestamped events using a cumulative frequency graph
+# red and blue temporal perfil
+# plot button response rate during red and during blue along time
 
 import sys, os
 from glob import glob
@@ -24,7 +25,7 @@ def draw_single(src_dir, show=True):
 	print os.path.dirname(src_dir)
 	ID = os.path.basename(os.path.dirname(src_dir))
 	paths = sorted(glob(os.path.join(src_dir,'0*')))
-	# global vars
+
 	data = []
 	ymax = []
 	for path in paths:
@@ -50,23 +51,14 @@ def draw_single(src_dir, show=True):
 	else:
 			figsize = (14, 4)
 
-	# figure.add_axes([0.1, 0.1, 0.8, 0.8], frameon = 0)
 	figure, axarr = plt.subplots(1, n_plots, sharey=True, sharex=False, figsize=figsize) 
 	figure.suptitle(title);
 	figure.text(0.5, 0.02, x_label)
-	#figure.text(0.014, 0.5, y_label, rotation='vertical',verticalalignment='center',horizontalalignment='right')
-
 	for i, d in enumerate(data):
 			(onsets, responses) = d
 			temporal_perfil(axarr[i], onsets, responses)
-			#plt.xlim(xmax = 300)
 
 	axarr[0].set_ylabel(y_label)
-	# axarr[0].legend(loc='upper right')
-	# axarr[1].set_xlabel(x_label)
-	#plt.ylim(ymax = ymax, ymin = 0)
-	#plt.text(-16,4,ID,fontsize=18)
-	#figure.subplots_adjust(wspace=0.05,left=0.05, right=.98,bottom=0.1,top=0.92)
 	figure.tight_layout()
 	
 	# save/plot figure

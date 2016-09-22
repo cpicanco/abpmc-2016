@@ -10,6 +10,12 @@
 
 # note: fps should be as constant as possible
 
+# eye movements temporal perfil
+# plot eye movements rate at
+  # each color during
+  # each presentation schema:
+    # colorA-colorB, colorA-colorC, colorD-colorC. colorD-colorB... and so on
+
 import os
 import sys
 import matplotlib
@@ -198,7 +204,6 @@ def draw_single(src_dir, show=True):
 		data[i]['src_timestamps'] = gaze_data['time']
 		data[i]['time_categorized'] = categorize_timestamps(data[i]['src_timestamps'],data[i]['dbsc'])
 
-
 	x_label = 'Ciclo'
 	y_label = 'dir. < Taxa (gaze/s) > esq.'
 	title = 'Particip. '+ID+': Taxa de movim. oculares durante cada cor'
@@ -213,7 +218,6 @@ def draw_single(src_dir, show=True):
 	else:
 		figsize = (14, 4)
 
-	# figure.add_axes([0.1, 0.1, 0.8, 0.8], frameon = 0)
 	figure, axarr = plt.subplots(1, n_plots, sharey=True, sharex=False, figsize=figsize) 
 	figure.suptitle(title);
 	figure.text(0.5, 0.02, x_label)
@@ -228,7 +232,6 @@ def draw_single(src_dir, show=True):
 			if c != n:
 				turnover_count += 1
 		print '\n','turnover_count:',turnover_count
-
 
 		left_right_xy = []
 		left_right_timestamps = []
@@ -245,9 +248,6 @@ def draw_single(src_dir, show=True):
 			left_right_xy = [left_right_xy[1],left_right_xy[0]]
 			left_right_timestamps = [left_right_timestamps[1],left_right_timestamps[0]]
 
-		# all stimuli, left and right
-		#temporal_perfil(axarr[i],all_stimuli(data[i]['beha_data']), left_right_timestamps,"positions")
-
 		temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[0],'pair', c1=RedLeft, nsize=0)
 		temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[1],'pair', c1=GreenRight, nsize=0, doreversed=True)
 
@@ -260,21 +260,12 @@ def draw_single(src_dir, show=True):
 		temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[0],'pair', c1=BlueLeft, nsize=3)
 		temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[1],'pair', c1=GreenRight, nsize=3, doreversed=True)
 		
-		# all stimuli (red blue), left
-		# temporal_perfil(axarr[i],stimuli_onset(data[i]['beha_data']), left_right_timestamps[0],'colors', c1=RedLeft, c2=BlueLeft)
-	
-		# all stimuli (red blue), right
-		# temporal_perfil(axarr[i],stimuli_onset(data[i]['beha_data']), left_right_timestamps[1],"colors",c1=RedRight,c2=BlueRight, doreversed=True)
-
 	ticks = [30,20,10,0,10,20,30]
 	axarr[0].set_yticklabels(labels=ticks)
-	#([x for x in range(-30,31)],)
 
 	plt.ylim(ymin = -30)
 	plt.ylim(ymax = 30)
 
-
-	# figure.subplots_adjust(wspace=0.1,left=0.05, right=.98,bottom=0.1,top=0.92)
 	axarr[0].set_ylabel(y_label)
 	figure.tight_layout()
 	if show:			
