@@ -1,4 +1,12 @@
 Picanço, C. R. F., & Tonneau, F. J. (2016). Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica. In Anais do XXV Encontro Brasileiro de Psicologia e Medicina Comportamental. Foz do Iguaçu, Brasil. Retrieved from http://encontroabpmc2016.com.br/programacao/
+
+___
+
+Para um PDF da apresentação clique no link abaixo:   
+For a PDF of the presentation click at the link below:
+
+- [LINK][presentation]
+
 ___
 
 Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica.
@@ -24,3 +32,5 @@ Tracking eye movements have been recognized as a method to investigate new and o
 
 
 *Key-words*: tracking eye movements; simple discrimination; accessibility.
+
+[presentation]:https://www.researchgate.net/publication/308421657_Tracking_eye_movements_in_the_field_of_behavior_analysis_a_technical_note
