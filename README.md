@@ -1,4 +1,12 @@
 Picanço, C. R. F., & Tonneau, F. J. (2016). Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica. In Anais do XXV Encontro Brasileiro de Psicologia e Medicina Comportamental. Foz do Iguaçu, Brasil. Retrieved from http://encontroabpmc2016.com.br/programacao/
+
+___
+
+Para um PDF da apresentação clique no link abaixo:   
+For a PDF of the presentation click at the link below:
+
+- [LINK][presentation]
+
 ___
 
 Análise do comportamento por meio de rastreamento de movimentos oculares: uma nota técnica.
@@ -20,7 +28,9 @@ Picanço, C. R. F., & Tonneau, F. J. (2016). Tracking eye movements in the field
 
 **Abstract**
 
-Tracking eye movements have been recognized as a method to investigate new and old behavioral analytic problems in the field of stimulus control. However, there is little research in the field perhaps by accessibility issues. The present work was aimed at 1) assembling an accessible lab for this type of research and 2) to demonstrate the lab in operation by means of a study on simple discrimination. The lab (costing ~R$3350) rely upon the Pupil opensource eye tracking platform and consisted of an eye tracker (Pupil Dev), a computer (i3, 2GB-DDR3, Linux/OS), a response button, dimmed lights and a chin rest. An ABA design was presented to ten participants with normal vision (4M, 6F). They received the instruction "Your task is to earn points pressing the button". Each phase (A and B) lasted 5 min and began with the onset of two stimuli equally spaced and simultaneously presented on a screen projection. A square was presented at the left side (its color was either red or blue) and a circle at the right side (its color was either green or cyano). Control for temporal features was avoided by alternating the colors randomly (mean 15 s, min. 11 s and max. 20 s). During the phase A, red and blue were associated with CRF (a sound related with points as consequence), that is, simple discriminative performances were not expected. During the phase B, red was associated with CRF and blue did not have programmed consequences, that is, simple discriminative performances were expected. The colors cyano and green were distractors and had no programmed consequences at all. Hence, eye fixations were induced to alternate from left to right and vice versa. Eye movements were categorized into left and right with the DBSCAN algorithm. The rate of eye movements associated with each stimulus and the corresponding rate of button response were visually inspected and allow the identification of correlated changes.
+Tracking eye movements have been recognized as a method to investigate new and old behavioral analytic problems in the field of stimulus control. However, there is little research in the field perhaps due accessibility issues. The present work was aimed at 1) assembling an accessible lab for this type of research and 2) to demonstrate the lab in operation by means of a study on simple discrimination. The lab (costing ~R$3350) rely upon the Pupil opensource eye tracking platform and consisted of an eye tracker (Pupil Dev), a computer (i3, 2GB-DDR3, Linux/OS), a response button, dimmed lights and a chin rest. An ABA design was presented to ten participants with normal vision (4M, 6F). They received the instruction "Your task is to earn points pressing the button". Each phase (A and B) lasted 5 min and began with the onset of two stimuli equally spaced and simultaneously presented on a screen projection. A square was presented at the left side (its color was either red or blue) and a circle at the right side (its color was either green or cyano). Control for temporal features was avoided by alternating the colors randomly (mean 15 s, min. 11 s and max. 20 s). During the phase A, red and blue were associated with CRF (a sound related with points as consequence), that is, simple discriminative performances were not expected. During the phase B, red was associated with CRF and blue did not have programmed consequences, that is, simple discriminative performances were expected. The colors cyano and green were distractors and had no programmed consequences at all. Hence, eye fixations were induced to alternate from left to right and vice versa. Eye movements were categorized into left and right with the DBSCAN algorithm. The rate of eye movements associated with each stimulus and the corresponding rate of button response were visually inspected and allowed the identification of correlated changes.
 
 
 *Key-words*: tracking eye movements; simple discrimination; accessibility.
+
+[presentation]:https://www.researchgate.net/publication/308421657_Tracking_eye_movements_in_the_field_of_behavior_analysis_a_technical_note

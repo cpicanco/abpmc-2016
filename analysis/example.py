@@ -13,10 +13,10 @@ import os
 # third party
 import matplotlib
 
-# self
+# self 
 from constants import INNER_PATHS
-from drawing import save_all
-from drawing.eye_movements import draw_single as draw_single_gaze
+from drawing import save_all 
+from drawing.eye_movements import draw_single as draw_single_gaze # NOTE: xy must be normalized
 from drawing.responses import draw_single as draw_single_responses
 
 # matplotlib configurations 
