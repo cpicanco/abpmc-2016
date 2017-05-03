@@ -27,6 +27,7 @@ from sklearn import metrics
 from glob import glob
 from methods import load_data, stimuli_onset, all_stimuli, color_pair
 from drawing import temporal_perfil
+from constants import STIMULI_W,STIMULI_H
 
 def categorize_timestamps(src_timestamps, dbsc):
 	clusters = {}
@@ -195,6 +196,8 @@ def draw_single(src_dir, show=True):
 
 		# DBSCAN expects data with shape (-1,2), we need to transpose ours first
 		data[i]['src_xy'] = np.array([gaze_data['x_norm'], gaze_data['y_norm']]).T
+
+		data[i]['eps'] = len(gaze_data)
 
 		data[i]['dbsc'] = DBSCAN(eps=data[i]['eps'], min_samples=data[i]['min_samples']).fit(data[i]['src_xy'])
 		data[i]['points_categorized'] = plot_dbscan(data[i]['src_xy'], data[i]['dbsc'])
