@@ -112,7 +112,7 @@ def all_responses(behavioral_data):
 def load_data(path):
 	if not isfile(path):
 		print path
-		raise IOError, path,": was not found."
+		raise IOError, path+": was not found."
 
 	return np.genfromtxt(path, delimiter="\t",missing_values=["NA"],
 		filling_values=None,names=True, autostrip=True, dtype=None)
