@@ -68,7 +68,7 @@ def categorize_masks(src_timestamps, dbsc):
         masks['noise_'+str(int(k))] = class_member_mask & ~core_samples_mask
     return masks
 
-def plot_dbscan(src_xy, dbsc, doplot=True):
+def plot_dbscan(src_xy, dbsc, doplot=False):
     dictionary = {}
     labels = dbsc.labels_
     core_samples_mask = np.zeros_like(labels, dtype = bool)
@@ -277,24 +277,34 @@ def len_clusters(dbscan):
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
     return n_clusters_
 
-def guess_dbscan_parameters(K,gaze_coordenates_on_screen,data=[{}], do_plot=True):
+def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
+    stimuli_size=(150, 150), # in pixels
+    screen_size=(1280,768), # in pixels
+    max_trials=50,
+    data=[{}],
+    do_plot=True
+):
     """
+    k: min clusters
     gaze_coordenates_on_screen: string  
     """
-    # paths = sorted(glob(os.path.join(src_dir,'0*')))
-    
-    # for path in enumerate(paths):
-    #   print(src_dir)
+    def get_min_samples(all_places):
+        N = len(gaze_data)
+        if all_places >= N:
+            return N
+        else:
+            return N/all_places
+
     dictionary = len(data)-1
     gaze_data = load_data(gaze_coordenates_on_screen)
     print 'Target: ',gaze_coordenates_on_screen
 
     # stimulus size in pixels
-    width, height = 150, 150
+    width, height = stimuli_size[0],stimuli_size[1]
 
     # normalize stimulus size
-    width /= float(SCREEN_WIDTH_PX)
-    height /= float(SCREEN_HEIGHT_PX)
+    width /= float(screen_size[0])
+    height /= float(screen_size[1])
 
     # assume stimuli with uniform diameter, assume eps as stimulus radius
     stimulus_radius = np.mean([width, height])/2 
@@ -304,8 +314,9 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,data=[{}], do_plot=True
     # assume min_samples as the quotient between the number of gaze points
     # and the number of places used to present stimuli
     # let the number of places be all possible paths in a graph
-    data[dictionary]['min_samples'] = len(gaze_data)/((K * K) * (K - 1))
-    print 'Using Min.Samples: ',data[dictionary]['min_samples']
+    data[dictionary]['all_places'] = (K * K) * (K - 1)
+    data[dictionary]['min_samples'] = get_min_samples(data[dictionary]['all_places'])
+    print 'Using Min.Samples: ', data[dictionary]['min_samples']
 
     # the researcher knowns how many clusters, so we use this information as a termination clause
     data[dictionary]['min_clusters'] = K
@@ -323,51 +334,57 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,data=[{}], do_plot=True
         data[dictionary]['categorized_xy'] = plot_dbscan(data[dictionary]['src_xy'], data[dictionary]['dbscan'],do_plot)
         n_clusters = len_clusters(data[dictionary]['dbscan'])
         if n_clusters >= data[dictionary]['min_clusters']:
-            print 'Finnished with: ',n_clusters,' clusters.'
+            print 'Finished with: ',n_clusters,' clusters.'
             break
         else:
-            data[dictionary]['min_samples'] /= 2
+            plt.gcf().clear()
+            data[dictionary]['all_places'] /= 2
+            data[dictionary]['min_samples'] = get_min_samples(data[dictionary]['all_places'])
             print 'Min.Clusters were not found, trying again using:',data[dictionary]['min_samples'], ' min. samples.'
             
             trials += 1
-            if trials == 4:
-                print "4 trials. Finished without clusters."
+            if trials == max_trials:
+                print max_trials," trials. Finished without clusters."
                 break
 
-            if data[dictionary]['min_samples'] < 2:
-                print "Too few min.samples. Finished without clusters."
+            if data[dictionary]['all_places'] < 2:
+                print "Too few places. Finished without clusters."
                 break
-
-
-    # data[dictionary]['categorized_masks'] = categorize_masks(data[i]['src_xy'], data[dictionary]['dbscan'])
-    # data[dictionary]['categorized_time'] = categorize_timestamps(data[dictionary]['src_timestamps'],data[dictionary]['dbscan'])
 
 if __name__ == '__main__':
-    from constants import SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX, INNER_PATHS
     from drawing import save_all
 
     data_path = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.dirname(data_path)
     data_path = os.path.dirname(data_path)
-    # single
-    # data_path = os.path.join(data_path,'P006/2015-05-25/000/gaze_coordenates_on_screen.txt')
-    # guess_dbscan_parameters(2,data_path)   
     
-    # all
+    # output folder for charts
     dbscan_path = os.path.join(data_path,'dbscan')
-    if not os.path.exists(dbscan_path):
-        os.makedirs(dbscan_path)    
-    for inner_path in INNER_PATHS:
-        a_data_path = os.path.join(data_path,inner_path) 
-        paths = sorted(glob(os.path.join(a_data_path,'0*')))
-        for path in paths:
-            filename = os.path.join(data_path,path)
-            filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
-            guess_dbscan_parameters(2,filename)
 
-            graphic_name = path.replace(data_path,'').strip(os.path.sep)
-            graphic_name = os.path.join(graphic_name.replace(os.path.sep,'_')+'.png')
-            graphic_name = os.path.join(dbscan_path,graphic_name)
+    # single
+    data_path = os.path.join(data_path,'P000/2015-05-13/000/gaze_coordenates_on_screen.txt')
+    guess_dbscan_parameters(25,data_path)
+    plt.show()
 
-            plt.savefig(graphic_name, bbox_inches='tight')
-            plt.close()
+    # graphic_name = os.path.join('P000/2015-05-13/000'.replace(os.path.sep,'_')+'.png')
+    # graphic_name = os.path.join(dbscan_path,graphic_name)
+    # plt.savefig(graphic_name, bbox_inches='tight')
+    # plt.close()
+
+    # all
+    # if not os.path.exists(dbscan_path):
+    #     os.makedirs(dbscan_path)    
+    # for inner_path in INNER_PATHS:
+    #     a_data_path = os.path.join(data_path,inner_path) 
+    #     paths = sorted(glob(os.path.join(a_data_path,'0*')))
+    #     for path in paths:
+    #         filename = os.path.join(data_path,path)
+    #         filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
+    #         guess_dbscan_parameters(2,filename)
+
+    #         graphic_name = path.replace(data_path,'').strip(os.path.sep)
+    #         graphic_name = os.path.join(graphic_name.replace(os.path.sep,'_')+'.png')
+    #         graphic_name = os.path.join(dbscan_path,graphic_name)
+
+    #         plt.savefig(graphic_name, bbox_inches='tight')
+    #         plt.close()
