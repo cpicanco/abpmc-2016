@@ -67,6 +67,9 @@ SCREEN_WIDTH = 70.0
 # how far the object was from the participant's head, in cm
 SCREEN_DISTANCE = 240.0
 
+STIMULI_W = 150 #px
+STIMULI_H = 150 #px
+
 # physical measurements of the screen projection in degrees of the participant's visual angle
 # SCREEN_WIDTH_DEG, SCREEN_HEIGHT_DEG = 15.3336085236, 9.15224758754
 # SCREEN_WIDTH_DEG, SCREEN_HEIGHT_DEG = 16.5942899397, 9.90471680774

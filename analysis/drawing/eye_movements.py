@@ -31,6 +31,7 @@ from sklearn import metrics
 from glob import glob
 from methods import load_data, stimuli_onset, all_stimuli, color_pair
 from drawing import temporal_perfil
+from constants import STIMULI_W,STIMULI_H
 
 def categorize_timestamps(src_timestamps, dbsc):
     clusters = {}
