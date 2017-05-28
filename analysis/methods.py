@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-	Copyright (C) 2016 Rafael Picanço.
+	Copyright (C) 2017 Rafael Picanço.
 
 	The present file is distributed under the terms of the GNU General Public License (GPL v3.0).
 
@@ -11,6 +11,19 @@ from os.path import isfile
 
 import numpy as np
 import constants as K
+
+# correction methods
+##############
+
+def remove_outside_screen(data, xmax=1, ymax=1):
+    x = (0 <= data[0, :]) & (data[0, :] < xmax)
+    y = (0 <= data[1, :]) & (data[1, :] < ymax)
+    data_clamped = data[:, x & y]
+    deleted_count = data.shape[1] - data_clamped.shape[1]
+    if deleted_count > 0:
+        print "\nRemoved", deleted_count, "data point(s) with", \
+        "out-of-screen coordinates!"
+    return data_clamped
 
 # convertion methods
 ##############
