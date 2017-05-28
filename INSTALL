@@ -1,7 +1,7 @@
 # Debian 8 OS recommended
 
 # install dependencies
-sudo apt-get install python-numpy python-matplotlib python-sklearn
+sudo apt-get install python-numpy python-matplotlib python-sklearn python-opencv
 
 # run
 python 'abpmc-2016/analysis/example.py'
