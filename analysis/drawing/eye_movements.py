@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-  Copyright (C) 2016 Rafael Picanço.
+  Copyright (C) 2017 Rafael Picanço.
 
   The present file is distributed under the terms of the GNU General Public License (GPL v3.0).
 
@@ -352,6 +352,31 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
                 print "Too few places. Finished without clusters."
                 break
 
+def guess_all_dbscan:
+    data_path = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.dirname(data_path)
+    data_path = os.path.dirname(data_path)
+    
+    # output folder for charts
+    dbscan_path = os.path.join(data_path,'dbscan')
+
+    if not os.path.exists(dbscan_path):
+        os.makedirs(dbscan_path)    
+    for inner_path in INNER_PATHS:
+        a_data_path = os.path.join(data_path,inner_path) 
+        paths = sorted(glob(os.path.join(a_data_path,'0*')))
+        for path in paths:
+            filename = os.path.join(data_path,path)
+            filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
+            guess_dbscan_parameters(2,filename)
+
+            graphic_name = path.replace(data_path,'').strip(os.path.sep)
+            graphic_name = os.path.join(graphic_name.replace(os.path.sep,'_')+'.png')
+            graphic_name = os.path.join(dbscan_path,graphic_name)
+
+            plt.savefig(graphic_name, bbox_inches='tight')
+            plt.close()
+
 if __name__ == '__main__':
     from drawing import save_all
 
@@ -373,19 +398,3 @@ if __name__ == '__main__':
     # plt.close()
 
     # all
-    # if not os.path.exists(dbscan_path):
-    #     os.makedirs(dbscan_path)    
-    # for inner_path in INNER_PATHS:
-    #     a_data_path = os.path.join(data_path,inner_path) 
-    #     paths = sorted(glob(os.path.join(a_data_path,'0*')))
-    #     for path in paths:
-    #         filename = os.path.join(data_path,path)
-    #         filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
-    #         guess_dbscan_parameters(2,filename)
-
-    #         graphic_name = path.replace(data_path,'').strip(os.path.sep)
-    #         graphic_name = os.path.join(graphic_name.replace(os.path.sep,'_')+'.png')
-    #         graphic_name = os.path.join(dbscan_path,graphic_name)
-
-    #         plt.savefig(graphic_name, bbox_inches='tight')
-    #         plt.close()
