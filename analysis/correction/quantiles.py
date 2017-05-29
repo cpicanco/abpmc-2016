@@ -80,6 +80,7 @@ for blockStart in equallySpacedLines:
         dataBias = xyBias(dataBlock)
     else:
         dataBlock = xyData[blockStart:dataCount, :]
+        
     if firstBlock:
         biasAlongBlocks = dataBias
         unbiasedData = correct(dataBlock, dataBias)

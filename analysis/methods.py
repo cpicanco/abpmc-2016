@@ -18,6 +18,7 @@ import constants as K
 def remove_outside_screen(data, xmax=1, ymax=1):
     x = (0 <= data[0, :]) & (data[0, :] < xmax)
     y = (0 <= data[1, :]) & (data[1, :] < ymax)
+    print(data.shape)
     data_clamped = data[:, x & y]
     deleted_count = data.shape[1] - data_clamped.shape[1]
     if deleted_count > 0:

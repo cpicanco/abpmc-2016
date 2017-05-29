@@ -13,7 +13,7 @@ import cv2
 ALGORITHM_KMEANS = 'kmeans'
 ALGORITHM_QUANTILES = 'quantiles'
 
-def unbiased_gaze(gaze_data, algorithm, min_block_size=3000,**kwargs):
+def unbiased_gaze(gaze_data, algorithm, min_block_size=1000,**kwargs):
     def bias(gaze_block,**kwargs):
         def kmeans(gaze_block,screen_center, k=2):
             """
@@ -26,15 +26,16 @@ def unbiased_gaze(gaze_data, algorithm, min_block_size=3000,**kwargs):
                                        attempts=10,
                                        flags=cv2.KMEANS_RANDOM_CENTERS)
 
-            return screen_center - centers.mean() 
+            return screen_center - centers.mean(axis=1) 
 
         def quantiles(gaze_block,screen_center,q=[5, 10, 15, 85, 90, 95]):
             """
                 assumes normalized gaze_data
             """
-            x = gaze_block[0,:].copy()
-            y = gaze_block[1,:].copy()
-            sample_size = gaze_block.shape[1]
+            print(gaze_block.shape)
+            x = gaze_block[:, 0].copy()
+            y = gaze_block[:, 1].copy()
+            sample_size = gaze_block.shape[0]
 
             x.sort()
             y.sort()
@@ -49,7 +50,7 @@ def unbiased_gaze(gaze_data, algorithm, min_block_size=3000,**kwargs):
             # divide by length to get quantile average
             x_stat = x_stat/len(q)
             y_stat = y_stat/len(q)
-            xy_stat = np.array([[x_stat], [y_stat]])
+            xy_stat = np.array([x_stat, y_stat])
             return xy_stat - screen_center
 
         kwargs['gaze_block'] = gaze_block
@@ -59,30 +60,49 @@ def unbiased_gaze(gaze_data, algorithm, min_block_size=3000,**kwargs):
             return quantiles(**kwargs)
 
     def correction(gaze_block, bias):
-        gaze_block[0,:] += bias[0]
-        gaze_block[1,:] += bias[1]
+        gaze_block[:, 0] = gaze_block[:, 0] - bias[0]
+        gaze_block[:, 1] = gaze_block[:, 1] - bias[1]
         return gaze_block
 
-    gaze_count = gaze_data.shape[1]    
-    if gaze_count < min_block_size:
-        print("\nToo few data to proceed. \nUsing min_block_size = %d"%gaze_count)
-        min_block_size = gaze_count
+    data_count = gaze_data.shape[0] 
+    print('all_gaze', data_count)   
+    if data_count < min_block_size:
+        print("\nToo few data to proceed. \nUsing min_block_size = %d"%data_count)
+        min_block_size = data_count
 
     # bias_along_blocks = []
-    data = []
-    for block_start in range(0, gaze_count, min_block_size):
+    # data = []
+    # for block_start in range(0, gaze_count, min_block_size):
+    #     block_end = block_start + min_block_size
+    #     if block_end <= gaze_count:
+    #         gaze_block = gaze_data[block_start:block_end, :]
+    #         gaze_bias = bias(gaze_block, **kwargs)
+    #     else:
+    #         block_end = gaze_count
+    #         gaze_block = gaze_data[block_start:block_end, :]
+
+    #     # bias_along_blocks.append({'bias':gaze_bias, 'block':[block_start,block_end]})
+    #     data.append(correction(gaze_block, gaze_bias))
+
+    first_block = True
+
+    for block_start in range(0, data_count, min_block_size):
         block_end = block_start + min_block_size
-        if block_end <= gaze_count:
-            gaze_block = gaze_data[:,block_start:block_end]
-            gaze_bias = bias(gaze_block, **kwargs)
+        if block_end <= data_count:
+            data_block = gaze_data[block_start:block_end, :]
+            data_bias = bias(data_block,**kwargs)
         else:
-            block_end = gaze_count
-            gaze_block = gaze_data[:,block_start:block_end]
+            data_block = gaze_data[block_start:data_count, :]
+            
+        if first_block:
+            bias_along_blocks = data_bias
+            unbiased_data = correction(data_block, data_bias)
+            first_block = False
+        else:
+            bias_along_blocks = np.vstack((bias_along_blocks, data_bias))
+            unbiased_data = np.vstack((unbiased_data, correction(data_block, data_bias)))
 
-        # bias_along_blocks.append({'bias':gaze_bias, 'block':[block_start,block_end]})
-        data.append(correction(gaze_block, gaze_bias))
-
-    return np.hstack(data)
+    return np.vstack(data)
 
 def plot(data):
     axes = plt.gca()
@@ -122,7 +142,7 @@ if __name__ == '__main__':
     import sys
     sys.path.append('../../analysis')
 
-    from constants import INNER_PATHS, SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
+    from constants import INNER_PATHS,INNER_PATHS_24, SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
     from methods import load_data, remove_outside_screen
     
     data_path = os.path.dirname(os.path.abspath(__file__))
@@ -136,14 +156,29 @@ if __name__ == '__main__':
         os.makedirs(output_path) 
 
     keyword_arguments = {
-        'screen_center':np.array([[0.5], [0.5]])
+        'screen_center':np.array([0.5, 0.5])
         }
 
     square1 = (362./SCREEN_WIDTH_PX, 319./SCREEN_HEIGHT_PX)
     square2 = (789./SCREEN_WIDTH_PX, 319./SCREEN_HEIGHT_PX)
     s_size = (100./SCREEN_WIDTH_PX, 100./SCREEN_HEIGHT_PX)  
 
-    for inner_path in INNER_PATHS:
+    # for inner_path in INNER_PATHS:
+    #     a_data_path = os.path.join(data_path,inner_path) 
+    #     paths = sorted(glob(os.path.join(a_data_path,'0*')))
+    #     for path in paths:
+    #         filename = os.path.join(data_path,path)
+    #         filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
+    #         print('\n'+filename)
+    #         data = load_data(filename)
+    #         data = np.array([data['x_norm'], data['y_norm']])
+    #         plot(data)
+
+    #         data = remove_outside_screen(data)
+    #         data = unbiased_gaze(data.T, ALGORITHM_QUANTILES, **keyword_arguments)
+    #         plot(data)
+
+    for inner_path in INNER_PATHS_24:
         a_data_path = os.path.join(data_path,inner_path) 
         paths = sorted(glob(os.path.join(a_data_path,'0*')))
         for path in paths:
@@ -155,5 +190,5 @@ if __name__ == '__main__':
             plot(data)
 
             data = remove_outside_screen(data)
-            data = unbiased_gaze(data, ALGORITHM_KMEANS, **keyword_arguments)
+            data = unbiased_gaze(data.T, ALGORITHM_QUANTILES, **keyword_arguments)
             plot(data)
