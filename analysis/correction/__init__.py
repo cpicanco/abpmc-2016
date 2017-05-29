@@ -13,7 +13,7 @@ import cv2
 ALGORITHM_KMEANS = 'kmeans'
 ALGORITHM_QUANTILES = 'quantiles'
 
-def unbiased_gaze(gaze_data, algorithm, min_block_size=1000,**kwargs):
+def unbiased_gaze(gaze_data, algorithm, min_block_size=3000,**kwargs):
     def bias(gaze_block,**kwargs):
         def kmeans(gaze_block,screen_center, k=2):
             """
@@ -84,17 +84,45 @@ def unbiased_gaze(gaze_data, algorithm, min_block_size=1000,**kwargs):
 
     return np.hstack(data)
 
+def plot(data):
+    axes = plt.gca()
+    axes.add_patch(
+        patches.Rectangle(
+            square1,   
+            s_size[0],          
+            s_size[1],
+            facecolor="gray",
+            alpha=0.3        
+        )
+    )
+    axes.add_patch(
+        patches.Rectangle(
+            square2,   
+            s_size[0],          
+            s_size[1],
+            facecolor="gray",
+            alpha=0.3        
+        )
+    )
+
+    # plt.scatter(*data)
+    axes.set_ylim(ymax = 1, ymin = 0)
+    axes.set_xlim(xmax = 1, xmin = 0)
+    plt.scatter(*data)    
+    plt.show()   
+    plt.gcf().clear() 
+
 if __name__ == '__main__':
     import matplotlib
     import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+
     import os
     from glob import glob
     import sys
     sys.path.append('../../analysis')
 
-    # from constants import SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
-
-    from constants import INNER_PATHS
+    from constants import INNER_PATHS, SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
     from methods import load_data, remove_outside_screen
     
     data_path = os.path.dirname(os.path.abspath(__file__))
@@ -111,6 +139,10 @@ if __name__ == '__main__':
         'screen_center':np.array([[0.5], [0.5]])
         }
 
+    square1 = (362./SCREEN_WIDTH_PX, 319./SCREEN_HEIGHT_PX)
+    square2 = (789./SCREEN_WIDTH_PX, 319./SCREEN_HEIGHT_PX)
+    s_size = (100./SCREEN_WIDTH_PX, 100./SCREEN_HEIGHT_PX)  
+
     for inner_path in INNER_PATHS:
         a_data_path = os.path.join(data_path,inner_path) 
         paths = sorted(glob(os.path.join(a_data_path,'0*')))
@@ -119,8 +151,9 @@ if __name__ == '__main__':
             filename = os.path.join(filename,'gaze_coordenates_on_screen.txt')
             print('\n'+filename)
             data = load_data(filename)
-            data = np.array([data['x_norm'], data['y_norm']])        
+            data = np.array([data['x_norm'], data['y_norm']])
+            plot(data)
+
             data = remove_outside_screen(data)
-            data = unbiased_gaze(data, ALGORITHM_QUANTILES, **keyword_arguments)
-            plt.scatter(*data)
-            plt.show()
+            data = unbiased_gaze(data, ALGORITHM_KMEANS, **keyword_arguments)
+            plot(data)
