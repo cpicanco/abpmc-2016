@@ -1,49 +1,63 @@
 # -*- coding: utf-8 -*-
 '''
-	Copyright (C) 2017 Rafael Picanço.
+    Copyright (C) 2017 Rafael Picanço.
 
-	The present file is distributed under the terms of the GNU General Public License (GPL v3.0).
+    The present file is distributed under the terms of the GNU General Public License (GPL v3.0).
 
-	You should have received a copy of the GNU General Public License
-	along with this program. If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
-from os.path import isfile
+import os
+from glob import glob
 
 import numpy as np
+
 import constants as K
 
 # correction methods
 ##############
 
-def remove_outside_screen(data, xmax=1, ymax=1):
-    x = (0 <= data[0, :]) & (data[0, :] < xmax)
-    y = (0 <= data[1, :]) & (data[1, :] < ymax)
-    print(data.shape)
-    data_clamped = data[:, x & y]
-    deleted_count = data.shape[1] - data_clamped.shape[1]
+def remove_outside_screen(data, xmax=1, ymax=1, horizontal=True):
+    if horizontal:
+        x = (0 <= data[0, :]) & (data[0, :] < xmax)
+        y = (0 <= data[1, :]) & (data[1, :] < ymax)
+        mask = x & y
+        data_clamped = data[:, mask]
+        deleted_count = data.shape[1] - data_clamped.shape[1]
+    else:
+        x = (0 <= data[:, 0]) & (data[:, 0] < xmax)
+        y = (0 <= data[:, 1]) & (data[:, 1] < ymax)
+        mask = x & y
+        data_clamped = data[mask, :]
+        deleted_count = data.shape[0] - data_clamped.shape[0]
+
     if deleted_count > 0:
         print "\nRemoved", deleted_count, "data point(s) with", \
         "out-of-screen coordinates!"
-    return data_clamped
+    return data_clamped, mask
+
+# def remove_out_of_screen(data,xmax=1,ymax=1):
+#     for line in data:
+#         x = (0 <= line['x_norm'][0, :]) and (data[0, :] < xmax) 
 
 # convertion methods
 ##############
 
 def normalized_to_pixel(gp):
-	"""
-	gp:numpy.array.shape(x, 2)
-	"""
-	gp[:,0] *= K.SCREEN_WIDTH_PX
-	gp[:,1] *= K.SCREEN_HEIGHT_PX
-	return gp
+    """
+    gp:numpy.array.shape(x, 2)
+    """
+    gp[:,0] *= K.SCREEN_WIDTH_PX
+    gp[:,1] *= K.SCREEN_HEIGHT_PX
+    return gp
 
 def pixel_to_degree(gp):
-	"""
-	gp:numpy.array.shape(x, 2)
-	"""
-	gp[:,0] /= K.PIXELS_PER_DEGREE
-	gp[:,1] /= K.PIXELS_PER_DEGREE
-	return gp
+    """
+    gp:numpy.array.shape(x, 2)
+    """
+    gp[:,0] /= K.PIXELS_PER_DEGREE
+    gp[:,1] /= K.PIXELS_PER_DEGREE
+    return gp
 
 # def normalized_to_degree(gp):
 #     """
@@ -55,14 +69,14 @@ def pixel_to_degree(gp):
 #     return gp
 
 def move_mean_to_zero(gp):
-	"""
-	gp:numpy.array.shape(x, 2)
-	"""
-	MX = np.mean(gp[:,0])
-	MY = np.mean(gp[:,1])
-	gp[:,0] = MX - gp[:,0]
-	gp[:,1] = MY - gp[:,1]
-	return gp
+    """
+    gp:numpy.array.shape(x, 2)
+    """
+    MX = np.mean(gp[:,0])
+    MY = np.mean(gp[:,1])
+    gp[:,0] = MX - gp[:,0]
+    gp[:,1] = MY - gp[:,1]
+    return gp
 
 
 
@@ -70,13 +84,13 @@ def move_mean_to_zero(gp):
 ############################
 
 def root_mean_square(gp):
-	"""
-	gp:numpy.array.shape(x, 2)
-	"""
-	RMSX = np.sqrt(np.mean(gp[:,0]**2))
-	RMSY = np.sqrt(np.mean(gp[:,1]**2))
-	# return np.sqrt((RMSX**2)+(RMSY**2))
-	return np.sqrt(np.mean(gp**2)), RMSX,RMSY
+    """
+    gp:numpy.array.shape(x, 2)
+    """
+    RMSX = np.sqrt(np.mean(gp[:,0]**2))
+    RMSY = np.sqrt(np.mean(gp[:,1]**2))
+    # return np.sqrt((RMSX**2)+(RMSY**2))
+    return np.sqrt(np.mean(gp**2)), RMSX,RMSY
 
 
 
@@ -85,48 +99,73 @@ def root_mean_square(gp):
 
 # stimuli timestamps
 def color_pair(behavioral_data, pair):  
-	"""
-		behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
-	"""
-	def all_events(string):
-		return [line['time'] for line in behavioral_data if line['event'] == string]
-		
-	return [[all_events('1a'), all_events('1b')],
-	        [all_events('1b'), all_events('2a')],
-	        [all_events('2a'), all_events('2b')],
-	        [all_events('2b'), all_events('1a')[1:]]][pair]
+    """
+        behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
+    """
+    def all_events(string):
+        return [line['time'] for line in behavioral_data if line['event'] == string]
+        
+    return [[all_events('1a'), all_events('1b')],
+            [all_events('1b'), all_events('2a')],
+            [all_events('2a'), all_events('2b')],
+            [all_events('2b'), all_events('1a')[1:]]][pair]
 
 def stimuli_onset(behavioral_data):  
-	"""
-		behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
-	"""
-	def all_events(string):
-		return [line['time'] for line in behavioral_data if line['event'] == string]
-		
-	return [all_events('1a'), all_events('2a')] # [[R1,R2,R3,..],[B1,B2,B3,..]] 
+    """
+        behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
+    """
+    def all_events(string):
+        return [line['time'] for line in behavioral_data if line['event'] == string]
+        
+    return [all_events('1a'), all_events('2a')] # [[R1,R2,R3,..],[B1,B2,B3,..]] 
 
 def all_stimuli(behavioral_data):
-	"""
-		behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
-	"""
-	return [line['time'] for line in behavioral_data if line['event_type'] == 'stimulus']
+    """
+        behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
+    """
+    return [line['time'] for line in behavioral_data if line['event_type'] == 'stimulus']
 
 # responses timestamps
 def all_responses(behavioral_data): 
-	"""
-		behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
-	"""
-	return [line['time'] for line in behavioral_data if line['event_type'] == 'response']
-
-
+    """
+        behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
+    """
+    return [line['time'] for line in behavioral_data if line['event_type'] == 'response']
 
 # file methods
 ############################
 
 def load_data(path):
-	if not isfile(path):
-		print path
-		raise IOError, path+": was not found."
+    if not os.path.isfile(path):
+        print path
+        raise IOError, path+": was not found."
 
-	return np.genfromtxt(path, delimiter="\t",missing_values=["NA"],
-		filling_values=None,names=True, autostrip=True, dtype=None)
+    return np.genfromtxt(path, delimiter="\t",missing_values=["NA"],
+        filling_values=None,names=True, autostrip=True, dtype=None)
+
+def get_filenames(target_experiment, target_datafile):
+    data_path = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.dirname(data_path)
+    print(data_path)
+
+    if 'dizzy-timers' in target_experiment:
+        target_root = K.INNER_PATHS
+
+    if 'eye-orientation' in target_experiment:
+        target_root = K.INNER_PATHS_24
+
+    filenames = []
+    for inner_path in target_root:
+        a_data_path = os.path.join(data_path,inner_path) 
+        paths = sorted(glob(os.path.join(a_data_path,'0*')))
+        paths = [os.path.join(data_path,path) for path in paths] 
+        [filenames.append(os.path.join(filename,target_datafile)) for filename in paths]
+           
+    return filenames
+
+
+# misc
+############################
+def inflate(old_size, increment):
+    return [old_size[0]+increment,old_size[1]+increment]
+

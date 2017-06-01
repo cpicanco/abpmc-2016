@@ -124,8 +124,8 @@ def draw_single(src_dir, show=True):
     print src_dir
 
     if src_dir == os.path.join(basepath,'P001/2015-05-19'):
-        data = [{'eps':0.07, 'min_samples':370}]
-                #{'eps':0.06, 'min_samples':1000}]
+        data = [{'eps':0.07, 'min_samples':370},
+                {'eps':0.06, 'min_samples':1000}]
 
     elif src_dir == os.path.join(basepath,'P001/2015-05-27'):
         data = [{'eps':0.06, 'min_samples':1000},
@@ -193,6 +193,7 @@ def draw_single(src_dir, show=True):
         gaze_events_path = os.path.join(data_folder, 'gaze_coordenates_on_screen.txt')
         
         gaze_data = load_data(gaze_events_path)
+        print(len(data))
         data[i]['beha_data'] = load_data(beha_events_path)
 
         # DBSCAN expects data with shape (-1,2), we need to transpose ours first
@@ -249,6 +250,10 @@ def draw_single(src_dir, show=True):
         if np.mean(left_right_xy[0][0]) > np.mean(left_right_xy[1][0]):
             left_right_xy = [left_right_xy[1],left_right_xy[0]]
             left_right_timestamps = [left_right_timestamps[1],left_right_timestamps[0]]
+        else:
+            left_right_xy = [left_right_xy[0],left_right_xy[1]]
+            left_right_timestamps = [left_right_timestamps[0],left_right_timestamps[1]]
+
 
         temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[0],'pair', c1=RedLeft, nsize=0)
         temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[1],'pair', c1=GreenRight, nsize=0, doreversed=True)
@@ -352,7 +357,7 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
                 print "Too few places. Finished without clusters."
                 break
 
-def guess_all_dbscan:
+def guess_all_dbscan():
     data_path = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.dirname(data_path)
     data_path = os.path.dirname(data_path)

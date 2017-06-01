@@ -33,7 +33,7 @@ data_path = os.path.dirname(data_path)
 # save_all(data_path,draw_single_responses,'taxa_de_respostas_ao_botao_A.png')
 
 # show single figure
-ip = INNER_PATHS[0]
+ip = INNER_PATHS[1]
 draw_single_responses(os.path.join(data_path, ip))
 draw_single_gaze(os.path.join(data_path, ip))
 
