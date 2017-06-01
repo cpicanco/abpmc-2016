@@ -10,7 +10,11 @@
 
 from os.path import join
 import matplotlib.pyplot as plt
-from constants import INNER_PATHS
+import matplotlib.patches as patches
+
+from constants import INNER_PATHS 
+from constants import SQUARE, CIRCLE, S_SIZE
+
 from methods import all_responses,stimuli_onset,load_data
 
 def save_all(src, draw_func, output_name):
@@ -30,9 +34,6 @@ def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2=
 
 		return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_pairwise]
 
-	# def adjust():
-	#   if doreversed:
-	#     data = [-x for x in data]
 	w = 0.2
 	if 'colors' in onsets_style:
 		# red
@@ -89,3 +90,43 @@ def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2=
 	#remove ticks
 	axis.xaxis.set_ticks_position('none')
 	axis.yaxis.set_ticks_position('none')
+
+def plot_xy(data, square=SQUARE, ellipse=CIRCLE): 
+    axes = plt.gca()
+    axes.add_patch(
+        patches.Rectangle(
+            (square.Left,square.Top),   
+            square.Width,          
+            square.Height,
+            facecolor="gray",
+            alpha=0.3        
+        )
+    )
+
+    axes.add_patch(
+        patches.Ellipse(
+            ellipse.Center,   
+            width=ellipse.Width,          
+            height=ellipse.Height,
+            angle=360,
+            facecolor="gray",
+            alpha=0.3        
+        )
+    )
+
+    # plt.scatter(*data)
+    axes.set_ylim(ymax = 1, ymin = 0)
+    axes.set_xlim(xmax = 1, xmin = 0)
+    plt.scatter(*data, s=1, c='b')    
+    plt.show()   
+    plt.gcf().clear() 
+
+def plot_bias(data, screen_center):           
+    bias = data+screen_center
+    axes = plt.gca()
+    axes.set_ylim(ymax = 1, ymin = 0)
+    axes.set_xlim(xmax = 1, xmin = 0)
+    plt.scatter(*screen_center, s=1.5)
+    plt.plot(*bias.T)
+    plt.show()
+    plt.gcf().clear()

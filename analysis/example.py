@@ -14,10 +14,13 @@ import os
 import matplotlib
 
 # self 
+from methods import get_data_path
 from constants import INNER_PATHS
 from drawing import save_all 
-from drawing.eye_movements import draw_single as draw_single_gaze # NOTE: xy must be normalized
-from drawing.responses import draw_single as draw_single_responses
+from drawing.eye_movements_dbscan import draw_single as draw_gaze_dbscan # NOTE: xy must be normalized
+from drawing.eye_movements_quantiles import draw_single as draw_gaze_quantiles # NOTE: xy must be normalized
+
+from drawing.responses import draw_single as draw_responses
 
 # matplotlib configurations 
 font = {'family' : 'serif',
@@ -25,21 +28,20 @@ font = {'family' : 'serif',
 matplotlib.rc('font', **font)
 
 # assign the root data folder
-data_path = os.path.dirname(os.path.abspath(__file__))
-data_path = os.path.dirname(data_path)
+data_path = get_data_path()
 
 # save all figures inside its respective data folder
-# save_all(data_path,draw_single_gaze,'taxa_movimentos_oculares_A.png')
-# save_all(data_path,draw_single_responses,'taxa_de_respostas_ao_botao_A.png')
+# save_all(data_path,draw_gaze_quantiles,'taxa_movimentos_oculares_B_quantis.png')
+# save_all(data_path,draw_responses,'taxa_de_respostas_ao_botao_A.png')
 
 # show single figure
-ip = INNER_PATHS[1]
-draw_single_responses(os.path.join(data_path, ip))
-draw_single_gaze(os.path.join(data_path, ip))
+# ip = INNER_PATHS[1]
+# draw_responses(os.path.join(data_path, ip))
+# draw_gaze_quantiles(os.path.join(data_path, ip))
 
 # from helpers import delete_from_inner_paths
 # from helpers import copy_to_inner_paths
 # filenames = ['README.md']
-# frompath = os.path.join(data_path,'[CHANGE-ME]')
-# copy_to_inner_paths(data_path, frompath, filenames)
+# frompath = os.path.join(data_path,'README.md')
+# copy_to_inner_paths(data_path, data_path, filenames)
 # delete_from_inner_paths(data_path, filenames)

@@ -88,53 +88,6 @@ def unbiased_gaze(data, algorithm, min_block_size=1000,**kwargs):
     bias_along_blocks['block'] = np.vstack(bias_along_blocks['block'])
     return np.vstack(unbiased), bias_along_blocks
 
-import sys
-sys.path.append('../../analysis')
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from constants import SQUARE, CIRCLE, S_SIZE
-
-def plot(data, square=SQUARE, ellipse=CIRCLE,size=S_SIZE): 
-    axes = plt.gca()
-    axes.add_patch(
-        patches.Rectangle(
-            square,   
-            size[0],          
-            size[1],
-            facecolor="gray",
-            alpha=0.3        
-        )
-    )
-
-    axes.add_patch(
-        patches.Ellipse(
-            ellipse,   
-            width=size[0],          
-            height=size[1],
-            angle=360,
-            facecolor="gray",
-            alpha=0.3        
-        )
-    )
-
-    # plt.scatter(*data)
-    axes.set_ylim(ymax = 1, ymin = 0)
-    axes.set_xlim(xmax = 1, xmin = 0)
-    plt.scatter(*data, s=1, c='b')    
-    plt.show()   
-    plt.gcf().clear() 
-
-def plot_bias(data, screen_center):           
-    bias = data+screen_center
-    axes = plt.gca()
-    axes.set_ylim(ymax = 1, ymin = 0)
-    axes.set_xlim(xmax = 1, xmin = 0)
-    plt.scatter(*screen_center, s=1.5)
-    plt.plot(*bias.T)
-    plt.show()
-    plt.gcf().clear() 
-
 if __name__ == '__main__':
     import os
     from methods import load_data, get_filenames, remove_outside_screen

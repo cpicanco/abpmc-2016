@@ -31,7 +31,7 @@ from sklearn import metrics
 from glob import glob
 from methods import load_data, stimuli_onset, all_stimuli, color_pair
 from drawing import temporal_perfil
-from constants import STIMULI_W,STIMULI_H
+from constants import BLUE_LEFT, RED_LEFT, GREEN_RIGHT, CYAN_RIGHT
 
 def categorize_timestamps(src_timestamps, dbsc):
     clusters = {}
@@ -110,14 +110,6 @@ def plot_dbscan(src_xy, dbsc, doplot=False):
     return dictionary
 
 def draw_single(src_dir, show=True):
-    # Targets
-    BlueLeft = '#011efe'
-    RedLeft = '#fe0000'
-
-    # Distractors
-    GreenRight = '#49ac15' 
-    CianoRight = '#a8e6cf' 
-
     ID = os.path.basename(os.path.dirname(src_dir))
     basepath = os.path.dirname(os.path.dirname(src_dir))
 
@@ -255,17 +247,17 @@ def draw_single(src_dir, show=True):
             left_right_timestamps = [left_right_timestamps[0],left_right_timestamps[1]]
 
 
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[0],'pair', c1=RedLeft, nsize=0)
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[1],'pair', c1=GreenRight, nsize=0, doreversed=True)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[0],'pair', c1=RED_LEFT, nsize=0)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],0), left_right_timestamps[1],'pair', c1=GREEN_RIGHT, nsize=0, doreversed=True)
 
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],1), left_right_timestamps[0],'pair', c1=RedLeft, nsize=1)
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],1), left_right_timestamps[1],'pair', c1=CianoRight, nsize=1, doreversed=True)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],1), left_right_timestamps[0],'pair', c1=RED_LEFT, nsize=1)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],1), left_right_timestamps[1],'pair', c1=CYAN_RIGHT, nsize=1, doreversed=True)
 
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],2), left_right_timestamps[0],'pair', c1=BlueLeft, nsize=2)
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],2), left_right_timestamps[1],'pair', c1=CianoRight, nsize=2, doreversed=True)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],2), left_right_timestamps[0],'pair', c1=BLUE_LEFT, nsize=2)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],2), left_right_timestamps[1],'pair', c1=CYAN_RIGHT, nsize=2, doreversed=True)
                         
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[0],'pair', c1=BlueLeft, nsize=3)
-        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[1],'pair', c1=GreenRight, nsize=3, doreversed=True)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[0],'pair', c1=BLUE_LEFT, nsize=3)
+        temporal_perfil(axarr[i],color_pair(data[i]['beha_data'],3), left_right_timestamps[1],'pair', c1=GREEN_RIGHT, nsize=3, doreversed=True)
         
     ticks = [30,20,10,0,10,20,30]
     axarr[0].set_yticklabels(labels=ticks)
@@ -381,6 +373,7 @@ def guess_all_dbscan():
 
             plt.savefig(graphic_name, bbox_inches='tight')
             plt.close()
+ 
 
 if __name__ == '__main__':
     from drawing import save_all

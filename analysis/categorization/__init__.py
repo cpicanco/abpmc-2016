@@ -13,31 +13,22 @@ sys.path.append('../../analysis')
 import numpy as np
 from matplotlib.path import Path as mp
 
-from constants import CIRCLE, SQUARE_P, S_SIZE, SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
-from correction import unbiased_gaze, ALGORITHM_QUANTILES, plot
-
-def ellipse(center, width, height, n = 360):
-    thetas = [np.pi*2 * i/n for i in range(n)]
-    points = [(center[0] + np.cos(t) * width, center[1] + np.sin(t) * height) for t in thetas]
-    return np.array(points)
+from drawing import plot_xy as plot
+from constants import CIRCLE, SQUARE, S_SIZE, SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX
+from correction import unbiased_gaze, ALGORITHM_QUANTILES
 
 if __name__ == '__main__':
-    import os
     from methods import load_data, get_filenames, remove_outside_screen
+    from methods import stimuli_onset, all_stimuli, color_pair
+    from drawing import temporal_perfil
 
     keyword_arguments = {
         'screen_center':np.array([0.5, 0.5])
         } 
 
-    left_shape = mp(np.array([
-        [SQUARE_P[0], SQUARE_P[1]],
-        [SQUARE_P[0], SQUARE_P[3]],
-        [SQUARE_P[2], SQUARE_P[3]],
-        [SQUARE_P[2], SQUARE_P[1]]
-        ])
-    )
+    left_shape = mp(SQUARE.Points())
 
-    right_shape = mp(ellipse(CIRCLE, S_SIZE[0]/2,S_SIZE[1]/2))
+    right_shape = mp(CIRCLE.Points())
 
     for filename in get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'):
         print('\n'+filename)
@@ -58,7 +49,8 @@ if __name__ == '__main__':
 
         right_gaze_mask = right_shape.contains_points(gaze_data.T)
         right_data = all_data[right_gaze_mask]
-        print('Data inside left shape: %d'%len(right_data))
+        print('Data inside right shape: %d'%len(right_data))
+        print('Data inside shapes: %d'%(len(left_data)+len(right_data)))
         
         plot([all_data['x_norm'],all_data['y_norm']])
         plot([left_data['x_norm'],left_data['y_norm']])

@@ -104,7 +104,7 @@ def color_pair(behavioral_data, pair):
     """
     def all_events(string):
         return [line['time'] for line in behavioral_data if line['event'] == string]
-        
+      
     return [[all_events('1a'), all_events('1b')],
             [all_events('1b'), all_events('2a')],
             [all_events('2a'), all_events('2b')],
@@ -143,10 +143,12 @@ def load_data(path):
     return np.genfromtxt(path, delimiter="\t",missing_values=["NA"],
         filling_values=None,names=True, autostrip=True, dtype=None)
 
-def get_filenames(target_experiment, target_datafile):
+def get_data_path():
     data_path = os.path.dirname(os.path.abspath(__file__))
-    data_path = os.path.dirname(data_path)
-    print(data_path)
+    return os.path.dirname(data_path)
+
+def get_filenames(target_experiment, target_datafile):
+    data_path = get_data_path()
 
     if 'dizzy-timers' in target_experiment:
         target_root = K.INNER_PATHS
@@ -162,10 +164,3 @@ def get_filenames(target_experiment, target_datafile):
         [filenames.append(os.path.join(filename,target_datafile)) for filename in paths]
            
     return filenames
-
-
-# misc
-############################
-def inflate(old_size, increment):
-    return [old_size[0]+increment,old_size[1]+increment]
-
