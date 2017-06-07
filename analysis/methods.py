@@ -97,13 +97,20 @@ def root_mean_square(gp):
 # data handle methods
 ############################
 
+def rate_in(time_interval_pairwise,timestamps):
+    def is_inside(timestamps,rangein, rangeout):
+        return [t for t in timestamps if (t >= rangein) and (t <= rangeout)]
+
+    return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_interval_pairwise]
+
+
 # stimuli timestamps
 def color_pair(behavioral_data, pair):  
     """
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
-    def all_events(string):
-        return [line['time'] for line in behavioral_data if line['event'] == string]
+    def all_events(stimulus_code):
+        return [line['time'] for line in behavioral_data if line['event'] == stimulus_code]
       
     return [[all_events('1a'), all_events('1b')],
             [all_events('1b'), all_events('2a')],
@@ -114,8 +121,8 @@ def stimuli_onset(behavioral_data):
     """
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
-    def all_events(string):
-        return [line['time'] for line in behavioral_data if line['event'] == string]
+    def all_events(stimulus_code):
+        return [line['time'] for line in behavioral_data if line['event'] == stimulus_code]
         
     return [all_events('1a'), all_events('2a')] # [[R1,R2,R3,..],[B1,B2,B3,..]] 
 
@@ -135,12 +142,12 @@ def all_responses(behavioral_data):
 # file methods
 ############################
 
-def load_data(path):
+def load_data(path, delimiter="\t"):
     if not os.path.isfile(path):
         print path
         raise IOError, path+": was not found."
 
-    return np.genfromtxt(path, delimiter="\t",missing_values=["NA"],
+    return np.genfromtxt(path, delimiter=delimiter,missing_values=["NA"],
         filling_values=None,names=True, autostrip=True, dtype=None)
 
 def get_data_path():

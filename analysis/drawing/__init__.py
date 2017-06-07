@@ -15,7 +15,7 @@ import matplotlib.patches as patches
 from constants import INNER_PATHS 
 from constants import SQUARE, CIRCLE, S_SIZE
 
-from methods import all_responses,stimuli_onset,load_data
+from methods import all_responses,stimuli_onset,load_data,rate_in
 
 def save_all(src, draw_func, output_name):
 	source_dir = src
@@ -28,17 +28,11 @@ def save_all(src, draw_func, output_name):
 		plt.close()
 
 def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2="blue", doreversed=False, nsize=None):
-	def get_rate(time_pairwise,timestamps):
-		def is_inside(timestamps,rangein, rangeout):
-			return [t for t in timestamps if (t >= rangein) and (t <= rangeout)]
-
-		return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_pairwise]
-
 	w = 0.2
 	if 'colors' in onsets_style:
 		# red
 		
-		data = get_rate(zip(onsets[0], onsets[1]),timestamps)
+		data = rate_in(zip(onsets[0], onsets[1]),timestamps)
 		N = len(data)
 		if doreversed:
 			data = [-x for x in data]
@@ -48,7 +42,7 @@ def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2=
 		
 
 		# removing the first element and reversing give us the blue one
-		data = get_rate(zip(onsets[1], onsets[0][1:]), timestamps)
+		data = rate_in(zip(onsets[1], onsets[0][1:]), timestamps)
 		N = len(data)
 		R = range(1,N+1)
 		if doreversed:
@@ -59,7 +53,7 @@ def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2=
 
 
 	elif 'pair' in onsets_style:
-		data = get_rate(zip(onsets[0], onsets[1]),timestamps)
+		data = rate_in(zip(onsets[0], onsets[1]),timestamps)
 		N = len(data)
 		R = range(N)
 		if doreversed:
@@ -72,11 +66,11 @@ def temporal_perfil(axis,onsets,timestamps, onsets_style='colors', c1="red", c2=
 
 	elif 'positions' in onsets_style:
 		# left
-		data = get_rate(zip(onsets,onsets[1:]),timestamps[0])
+		data = rate_in(zip(onsets,onsets[1:]),timestamps[0])
 		axis.plot(data, color="black", label="Left")
 
 		# right
-		data = get_rate(zip(onsets,onsets[1:]),timestamps[1])
+		data = rate_in(zip(onsets,onsets[1:]),timestamps[1])
 		axis.plot(data, color="grey", label="Right")
 
 	# remove outer frame
@@ -114,7 +108,6 @@ def plot_xy(data, square=SQUARE, ellipse=CIRCLE):
         )
     )
 
-    # plt.scatter(*data)
     axes.set_ylim(ymax = 1, ymin = 0)
     axes.set_xlim(xmax = 1, xmin = 0)
     plt.scatter(*data, s=1, c='b')    

@@ -73,14 +73,9 @@ SCREEN_WIDTH = 70.0
 # how far the object was from the participant's head, in cm
 SCREEN_DISTANCE = 240.0
 
-STIMULI_W = 150 #px
-STIMULI_H = 150 #px
-
 SQUARE_LEFT_TOP = (362., 319.)
 CIRCLE_LEFT_TOP = (789., 319.)
 S_SIZE = (130., 130.)
-# S_SIZE = (130./SCREEN_WIDTH_PX, 130./SCREEN_HEIGHT_PX)
-
 
 class Circle(object):
     """Right Circle"""
@@ -145,12 +140,12 @@ class Square(object):
         ])
 
 # Targets
-BLUE_LEFT = '#011efe'
-RED_LEFT = '#fe0000'
+BLUE_LEFT = '#011EFE'
+RED_LEFT = '#FE0000'
 
 # Distractors
-GREEN_RIGHT = '#49ac15' 
-CYAN_RIGHT = '#a8e6cf' 
+GREEN_RIGHT = '#49AC15' 
+CYAN_RIGHT = '#A8E6CF' 
 
 CIRCLE = Circle()
 SQUARE = Square()
