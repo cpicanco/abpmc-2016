@@ -69,7 +69,7 @@ def categorize_masks(src_timestamps, dbsc):
         masks['noise_'+str(int(k))] = class_member_mask & ~core_samples_mask
     return masks
 
-def plot_dbscan(src_xy, dbsc, doplot=False):
+def plot_dbscan(src_xy, dbsc, doplot=True):
     dictionary = {}
     labels = dbsc.labels_
     core_samples_mask = np.zeros_like(labels, dtype = bool)
@@ -105,7 +105,7 @@ def plot_dbscan(src_xy, dbsc, doplot=False):
         axes.legend()
         # plt.axis('equal')
         plt.title('')
-        #plt.show()
+        plt.show()
 
     return dictionary
 
@@ -113,16 +113,18 @@ def draw_single(src_dir, show=True):
     ID = os.path.basename(os.path.dirname(src_dir))
     basepath = os.path.dirname(os.path.dirname(src_dir))
 
-    print src_dir
+    print(src_dir)
+    print(ID)
+    print(basepath)
 
     if src_dir == os.path.join(basepath,'P001/2015-05-19'):
         data = [{'eps':0.07, 'min_samples':370},
                 {'eps':0.06, 'min_samples':1000}]
 
     elif src_dir == os.path.join(basepath,'P001/2015-05-27'):
-        data = [{'eps':0.06, 'min_samples':1000},
-                {'eps':0.06, 'min_samples':1000},
-                {'eps':0.06, 'min_samples':1000}]
+        data = [{'eps':0.02, 'min_samples':1000},
+                {'eps':0.02, 'min_samples':1000},
+                {'eps':0.02, 'min_samples':1000}]
 
     elif src_dir == os.path.join(basepath,'P002/2015-05-19'):
         data = [{'eps':0.06, 'min_samples':1000},
@@ -182,10 +184,10 @@ def draw_single(src_dir, show=True):
     for i, path in enumerate(paths):    
         data_folder = os.path.join(src_dir, path)
         beha_events_path = os.path.join(data_folder, "behavioral_events.txt")
-        gaze_events_path = os.path.join(data_folder, 'gaze_coordenates_on_screen.txt')
+        gaze_events_path = os.path.join(data_folder, 'gaze_positions.csv')
         
-        gaze_data = load_data(gaze_events_path)
-        print(len(data))
+        gaze_data = load_data(gaze_events_path,',')
+
         data[i]['beha_data'] = load_data(beha_events_path)
 
         # DBSCAN expects data with shape (-1,2), we need to transpose ours first
@@ -276,7 +278,7 @@ def len_clusters(dbscan):
     return n_clusters_
 
 def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
-    stimuli_size=(150, 150), # in pixels
+    stimuli_size=(130, 130), # in pixels
     screen_size=(1280,768), # in pixels
     max_trials=50,
     data=[{}],
@@ -376,23 +378,4 @@ def guess_all_dbscan():
  
 
 if __name__ == '__main__':
-    from drawing import save_all
-
-    data_path = os.path.dirname(os.path.abspath(__file__))
-    data_path = os.path.dirname(data_path)
-    data_path = os.path.dirname(data_path)
-    
-    # output folder for charts
-    dbscan_path = os.path.join(data_path,'dbscan')
-
-    # single
-    data_path = os.path.join(data_path,'P000/2015-05-13/000/gaze_coordenates_on_screen.txt')
-    guess_dbscan_parameters(25,data_path)
-    plt.show()
-
-    # graphic_name = os.path.join('P000/2015-05-13/000'.replace(os.path.sep,'_')+'.png')
-    # graphic_name = os.path.join(dbscan_path,graphic_name)
-    # plt.savefig(graphic_name, bbox_inches='tight')
-    # plt.close()
-
-    # all
+    draw_single('/home/rafael/git/abpmc/P001/2015-05-27')

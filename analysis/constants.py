@@ -157,5 +157,5 @@ SCREEN_WIDTH_DEG, SCREEN_HEIGHT_DEG = get_visual_angle(SCREEN_WIDTH, SCREEN_DIST
 PIXELS_PER_DEGREE = get_pixels_per_degree(SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX, SCREEN_WIDTH_DEG, SCREEN_HEIGHT_DEG)
 
 if __name__ == '__main__':
-    print 'width_deg:', SCREEN_WIDTH_DEG, 'height_deg', SCREEN_HEIGHT_DEG
-    print 'room_lux:',ROOM_LUX
+    print('width_deg:', SCREEN_WIDTH_DEG, 'height_deg', SCREEN_HEIGHT_DEG)
+    print('room_lux:',ROOM_LUX)

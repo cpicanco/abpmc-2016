@@ -25,7 +25,7 @@ from methods import stimuli_onset, rate_in, all_stimuli
 # left_shape = mp(SQUARE.Points())
 # right_shape = mp(CIRCLE.Points())
 
-def categorize_single(gaze_filename, beha_filename):
+def relative_rate_left_right(gaze_filename, beha_filename):
     left_shape = mp(Circle('left').Points(factor=2))  
     right_shape = mp(Circle('right').Points(factor=2))
 
@@ -39,7 +39,7 @@ def categorize_single(gaze_filename, beha_filename):
     print('\n'+gaze_filename)
     print(beha_filename)
     all_gaze_data = load_data(gaze_filename)
-    print(all_gaze_data)
+    # print(all_gaze_data)
 
     # load behavioral data
     beha_data = load_data(beha_filename)
@@ -79,7 +79,7 @@ def categorize_single(gaze_filename, beha_filename):
         (BLUE_LEFT, GREEN_RIGHT)
     ]
 
-    relative_rate = [l/(r+l) for l, r in zip(left_data, right_data)]
+    relative_rate = [l/(r+l) if r+l > 0 else None for l, r in zip(left_data, right_data)]
 
     colors = []
     color_combination = 0
@@ -96,10 +96,27 @@ def categorize_single(gaze_filename, beha_filename):
         color_combination += 1
         if color_combination > 3:
             color_combination = 0
+    plt.plot(relative_rate,c='black', marker='None')
     plt.scatter(range(len(relative_rate)),relative_rate,c=colors)
-    #plt.plot(right_data,c='blue',ls='None', marker='o')
     plt.show()
     # print(left_data, right_data)
+
+def relative_rate_blue_red(src_dir):
+    paths = sorted(glob(os.path.join(src_dir,'0*')))
+    data = []
+    for path in paths:
+        beha_data = load_data(os.path.join(path,"behavioral_events.txt"))
+        target_intervals = stimuli_onset(beha_data)
+        red_intervals = zip(target_intervals[0], target_intervals[1])
+        blue_intervals = zip(target_intervals[1], target_intervals[0][1:])
+        responses = all_responses(beha_data)
+        
+        red_data = rate_in(red_intervals, responses)
+        blue_data = rate_in(blue_intervals, responses)
+
+        relative_rate = [r/(r+b) if r+b > 0 else None for r, b in zip(red_data, blue_data)]
+        data.append(relative_rate)
+    return data
 
 if __name__ == '__main__':
     filenames = zip(
@@ -108,8 +125,8 @@ if __name__ == '__main__':
         )
 
     for gaze_filename, beha_filename in filenames:
-        if gaze_filename == '/home/rafael/git/abpmc/P004/2015-05-20/002/gaze_coordenates_on_screen.txt':
-            categorize_single(gaze_filename, beha_filename)
+        # relative_rate_left_right(gaze_filename, beha_filename)
+        ABA = relative_rate_blue_red(beha_filename)
     # output folder
     # output_path = os.path.join(data_path,'categorization')
 

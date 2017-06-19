@@ -32,8 +32,7 @@ def remove_outside_screen(data, xmax=1, ymax=1, horizontal=True):
         deleted_count = data.shape[0] - data_clamped.shape[0]
 
     if deleted_count > 0:
-        print "\nRemoved", deleted_count, "data point(s) with", \
-        "out-of-screen coordinates!"
+        print("\nRemoved", deleted_count, "data point(s) with out-of-screen coordinates!")
     return data_clamped, mask
 
 # def remove_out_of_screen(data,xmax=1,ymax=1):
@@ -144,8 +143,8 @@ def all_responses(behavioral_data):
 
 def load_data(path, delimiter="\t"):
     if not os.path.isfile(path):
-        print path
-        raise IOError, path+": was not found."
+        print(path)
+        raise IOError(path+": was not found.")
 
     return np.genfromtxt(path, delimiter=delimiter,missing_values=["NA"],
         filling_values=None,names=True, autostrip=True, dtype=None)
