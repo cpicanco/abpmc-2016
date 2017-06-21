@@ -46,9 +46,9 @@ INNER_PATHS_24 = [
 ]
 
 INNER_PATHS = [
-    'P001'+os.path.sep+'2015-05-19', # 1280,768
+    # 'P001'+os.path.sep+'2015-05-19', # 1280,768
     'P001'+os.path.sep+'2015-05-27',
-    'P002'+os.path.sep+'2015-05-19',
+    # 'P002'+os.path.sep+'2015-05-19',
     'P002'+os.path.sep+'2015-05-20',
     'P003'+os.path.sep+'2015-05-20',
     'P004'+os.path.sep+'2015-05-20',

@@ -120,4 +120,9 @@ if __name__ == '__main__':
     from constants import INNER_PATHS
     from methods import get_data_path
 
-    draw_single_proportion(os.path.join(get_data_path(),INNER_PATHS[1]))
+    filenames = [os.path.join(get_data_path(),filename) for filename in INNER_PATHS]
+    for filename in filenames:
+        print(filename)
+
+        # output folder
+        draw_single_proportion(filename)

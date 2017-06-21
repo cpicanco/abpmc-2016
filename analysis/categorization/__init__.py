@@ -10,6 +10,8 @@
 import sys
 sys.path.append('../../analysis')
 
+import os
+from glob import glob
 import numpy as np
 from matplotlib.path import Path as mp
 import matplotlib.pyplot as plt
@@ -20,7 +22,7 @@ from constants import BLUE_LEFT, RED_LEFT, GREEN_RIGHT, CYAN_RIGHT
 from correction import unbiased_gaze, ALGORITHM_QUANTILES
 
 from methods import load_data, get_filenames, remove_outside_screen
-from methods import stimuli_onset, rate_in, all_stimuli 
+from methods import stimuli_onset, rate_in, all_stimuli, all_responses
 
 # left_shape = mp(SQUARE.Points())
 # right_shape = mp(CIRCLE.Points())
@@ -115,20 +117,22 @@ def relative_rate_blue_red(src_dir):
         blue_data = rate_in(blue_intervals, responses)
 
         relative_rate = [r/(r+b) if r+b > 0 else None for r, b in zip(red_data, blue_data)]
-        data.append(relative_rate)
+        data.append(relative_rate[0:8])
     return data
 
 if __name__ == '__main__':
-    filenames = zip(
-        get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'),
-        get_filenames('dizzy-timers','behavioral_events.txt')
-        )
+    from constants import INNER_PATHS
+    from methods import get_data_path
 
-    for gaze_filename, beha_filename in filenames:
-        # relative_rate_left_right(gaze_filename, beha_filename)
-        ABA = relative_rate_blue_red(beha_filename)
-    # output folder
-    # output_path = os.path.join(data_path,'categorization')
+    filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
+    data = np.array([relative_rate_blue_red(filename) for filename in filenames])
+    print(data.shape)
+    # data_means = [np.mean(data[:, condition, cycles]) for condition in range(0,3) for cycles in range(0,9)]
+    # plt.plot(data_means)    
+    # plt.show()    
 
-    # if not os.path.exists(output_path):
-    #     os.makedirs(output_path) 
+    # filenames = zip(
+    #     get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'),
+    #     get_filenames('dizzy-timers','behavioral_events.txt')
+    #     )
+    # relative_rate_left_right(gaze_filename, beha_filename)
