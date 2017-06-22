@@ -60,6 +60,15 @@ INNER_PATHS = [
     'P010'+os.path.sep+'2015-05-26'
 ]
 
+INNER_PATHS_DISCRIMINATION = [
+    INNER_PATHS[0],
+    INNER_PATHS[1],
+    INNER_PATHS[2],
+    INNER_PATHS[3],
+    INNER_PATHS[5],
+    INNER_PATHS[6]
+]
+
 ROOM_LOW_AREA = 15.0 # square metters
 
 # 4 X GE ( F32T8/BF ), 4100K

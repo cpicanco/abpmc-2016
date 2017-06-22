@@ -27,24 +27,16 @@ from methods import stimuli_onset, rate_in, all_stimuli, all_responses
 # left_shape = mp(SQUARE.Points())
 # right_shape = mp(CIRCLE.Points())
 
-def relative_rate_left_right(gaze_filename, beha_filename):
+def gaze_mask_left_right(all_gaze_data):
     left_shape = mp(Circle('left').Points(factor=2))  
     right_shape = mp(Circle('right').Points(factor=2))
 
     x_norm = 'x_norm'
     y_norm = 'y_norm'
-    timestamps = 'time'
+    
     keyword_arguments = {
         'screen_center':np.array([0.5, 0.5])
         }
-
-    print('\n'+gaze_filename)
-    print(beha_filename)
-    all_gaze_data = load_data(gaze_filename)
-    # print(all_gaze_data)
-
-    # load behavioral data
-    beha_data = load_data(beha_filename)
 
     # load gaze data
     gaze_data = np.array([all_gaze_data[x_norm], all_gaze_data[y_norm]])
@@ -65,9 +57,22 @@ def relative_rate_left_right(gaze_filename, beha_filename):
     print('Data inside right shape: %d'%len(right_data))
     print('Data inside shapes: %d'%(len(left_data)+len(right_data)))
     
+    return left_gaze_mask, right_gaze_mask
+
+def relative_rate_left_right(gaze_filename, beha_filename):
+    timestamps = 'time'
+    
+    print('\n'+gaze_filename)
+    all_gaze_data = load_data(gaze_filename)
+
+    left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+    
+    print(beha_filename)
+    # load behavioral data
+    beha_data = load_data(beha_filename)
+
     left_timestamps = all_gaze_data[left_gaze_mask][timestamps] 
     right_timestamps = all_gaze_data[right_gaze_mask][timestamps]
-
     all_target_intervals = all_stimuli(beha_data)
     all_target_intervals = zip(all_target_intervals, all_target_intervals[1:])
     
@@ -103,7 +108,7 @@ def relative_rate_left_right(gaze_filename, beha_filename):
     plt.show()
     # print(left_data, right_data)
 
-def relative_rate_blue_red(src_dir):
+def relative_rate_blue_red(src_dir, cycles_set=slice(0,8)):
     paths = sorted(glob(os.path.join(src_dir,'0*')))
     data = []
     for path in paths:
@@ -116,23 +121,15 @@ def relative_rate_blue_red(src_dir):
         red_data = rate_in(red_intervals, responses)
         blue_data = rate_in(blue_intervals, responses)
 
-        relative_rate = [r/(r+b) if r+b > 0 else None for r, b in zip(red_data, blue_data)]
-        data.append(relative_rate[0:8])
+        relative_rate = [r/(r+b) if r+b > 0 else np.nan for r, b in zip(red_data, blue_data)]
+        data.append(relative_rate[cycles_set])
     return data
 
 if __name__ == '__main__':
-    from constants import INNER_PATHS
-    from methods import get_data_path
 
-    filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
-    data = np.array([relative_rate_blue_red(filename) for filename in filenames])
-    print(data.shape)
-    # data_means = [np.mean(data[:, condition, cycles]) for condition in range(0,3) for cycles in range(0,9)]
-    # plt.plot(data_means)    
-    # plt.show()    
-
-    # filenames = zip(
-    #     get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'),
-    #     get_filenames('dizzy-timers','behavioral_events.txt')
-    #     )
-    # relative_rate_left_right(gaze_filename, beha_filename)
+    filenames = zip(
+        get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'),
+        get_filenames('dizzy-timers','behavioral_events.txt')
+        )
+    gaze_filename, beha_filename = filenames[0]
+    relative_rate_left_right(gaze_filename, beha_filename)
