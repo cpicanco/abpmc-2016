@@ -212,13 +212,13 @@ def draw_proportions(cycles_set=slice(0,9),show=True, output_path=None):
 #     plt.show()   
 
 if __name__ == '__main__':
-    # from constants import INNER_PATHS
-    # from methods import get_data_path
+    from constants import INNER_PATHS
+    from methods import get_data_path
 
-    # filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS if filename in INNER_PATHS_DISCRIMINATION]
-    # for filename in filenames:
-    #     print(filename)
-    #     draw_single_proportion(filename)
+    filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
+    for filename in filenames:
+        print(filename)
+        draw_single_proportion(filename)
 
     draw_proportions()
     # draw_proportions(output_path=os.path.join(get_data_path(),'button_press.png'))

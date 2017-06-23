@@ -102,6 +102,20 @@ def rate_in(time_interval_pairwise,timestamps):
 
     return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_interval_pairwise]
 
+def switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask):
+    # changeover_mask = left_gaze_mask | right_gaze_mask
+
+    # all_gaze_data[left_gaze_mask]['time']
+    changeover_mask = left_gaze_mask | right_gaze_mask 
+    filtered_all_gaze = all_gaze_data[changeover_mask]
+    filtered_left_gaze = left_gaze_mask[changeover_mask]
+
+    filtered_changeover_mask = [True if a != b else False for a, b in zip(filtered_left_gaze,filtered_left_gaze[1:])]
+    filtered_changeover_mask.append(False)
+    filtered_changeover_mask = np.array(filtered_changeover_mask)
+    switchings = filtered_all_gaze[filtered_changeover_mask]['time']
+    print('Left-Right switchings:%d'%switchings.shape[0])
+    return switchings
 
 # stimuli timestamps
 def color_pair(behavioral_data, pair):  

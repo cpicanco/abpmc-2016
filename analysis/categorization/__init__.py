@@ -23,6 +23,7 @@ from correction import unbiased_gaze, ALGORITHM_QUANTILES
 
 from methods import load_data, get_filenames, remove_outside_screen
 from methods import stimuli_onset, rate_in, all_stimuli, all_responses
+from methods import switching_timestamps
 
 # left_shape = mp(SQUARE.Points())
 # right_shape = mp(CIRCLE.Points())
@@ -86,7 +87,7 @@ def relative_rate_left_right(gaze_filename, beha_filename):
         (BLUE_LEFT, GREEN_RIGHT)
     ]
 
-    relative_rate = [l/(r+l) if r+l > 0 else None for l, r in zip(left_data, right_data)]
+    relative_rate = [l/(r+l) if r+l > 0 else np.nan for l, r in zip(left_data, right_data)]
 
     colors = []
     color_combination = 0
@@ -125,8 +126,47 @@ def relative_rate_blue_red(src_dir, cycles_set=slice(0,8)):
         data.append(relative_rate[cycles_set])
     return data
 
-if __name__ == '__main__':
+def rate_switching(src_dir, cycles_set=slice(0,8)):
+    paths = sorted(glob(os.path.join(src_dir,'0*')))
+    data = []
+    for path in paths:
+        all_gaze_data = load_data(os.path.join(path,"gaze_coordenates_on_screen.txt"))
+        left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+        switchings = switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask)
+        beha_data = load_data(os.path.join(path,"behavioral_events.txt"))
+        target_intervals = stimuli_onset(beha_data)
+        red_intervals = zip(target_intervals[0], target_intervals[1])
+        blue_intervals = zip(target_intervals[1], target_intervals[0][1:])
+        red_data = rate_in(red_intervals, switchings)[cycles_set]
+        blue_data = rate_in(blue_intervals, switchings)[cycles_set]
+        data.append((red_data,blue_data,switchings.shape[0]))
+    return data
 
+def relative_rate_switching(src_dir, cycles_set=slice(0,8)):
+    paths = sorted(glob(os.path.join(src_dir,'0*')))
+    data = []
+    for path in paths:
+        all_gaze_data = load_data(os.path.join(path,"gaze_coordenates_on_screen.txt"))
+
+        left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+        switchings = switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask)
+        print(switchings.shape)
+        # stimuli
+        beha_data = load_data(os.path.join(path,"behavioral_events.txt"))
+        target_intervals = stimuli_onset(beha_data)
+        red_intervals = zip(target_intervals[0], target_intervals[1])
+        blue_intervals = zip(target_intervals[1], target_intervals[0][1:])
+
+
+        red_data = rate_in(red_intervals, switchings)
+        blue_data = rate_in(blue_intervals, switchings)
+
+        relative_rate = [r/(r+b) if r+b > 0 else np.nan for r, b in zip(red_data, blue_data)]
+        data.append(relative_rate[cycles_set])
+    return data
+
+
+if __name__ == '__main__':
     filenames = zip(
         get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'),
         get_filenames('dizzy-timers','behavioral_events.txt')
