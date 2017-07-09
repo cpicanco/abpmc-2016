@@ -102,6 +102,9 @@ def rate_in(time_interval_pairwise,timestamps):
 
     return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_interval_pairwise]
 
+def relative_rate(data1, data2):
+    return [a/(b+a) if b+a > 0 else np.nan for a, b in zip(data1, data2)]
+
 def switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask):
     # changeover_mask = left_gaze_mask | right_gaze_mask
 

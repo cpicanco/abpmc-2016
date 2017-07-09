@@ -22,8 +22,9 @@ from constants import BLUE_LEFT, RED_LEFT, GREEN_RIGHT, CYAN_RIGHT
 from correction import unbiased_gaze, ALGORITHM_QUANTILES
 
 from methods import load_data, get_filenames, remove_outside_screen
-from methods import stimuli_onset, rate_in, all_stimuli, all_responses
+from methods import stimuli_onset, all_stimuli, all_responses
 from methods import switching_timestamps
+from methods import rate_in, relative_rate
 
 # left_shape = mp(SQUARE.Points())
 # right_shape = mp(CIRCLE.Points())
@@ -76,8 +77,16 @@ def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
             l_target_intervals = zip(l_target_intervals, l_target_intervals[1:])
             left_data = rate_in(l_target_intervals, left_timestamps)
             right_data = rate_in(l_target_intervals, right_timestamps)
-            relative_rate = [l/(r+l) if r+l > 0 else np.nan for l, r in zip(left_data, right_data)]
-            data.append(relative_rate[cycles_set])
+            relative_rate_all = relative_rate(left_data, right_data)
+            data.append(relative_rate_all)
+
+        elif 'left_right_onsets':
+            l_target_intervals = all_stimuli(beha_data)
+            l_target_intervals = zip(l_target_intervals, l_target_intervals[1:])
+            left_data = rate_in(l_target_intervals, left_timestamps)
+            right_data = rate_in(l_target_intervals, right_timestamps)
+            relative_rate_all = relative_rate(left_data, right_data)
+            data.append([relative_rate_all[::2],relative_rate_all[1::2]])
 
         elif 'red_blue_onsets' in target_intervals:
             l_target_intervals = stimuli_onset(beha_data)
@@ -86,13 +95,12 @@ def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
 
             left_red_data = rate_in(red_intervals, left_timestamps)
             right_red_data = rate_in(red_intervals, right_timestamps)
-            relative_rate_positive = [l/(r+l) if r+l > 0 else np.nan for l, r in zip(left_red_data, right_red_data)]
+            relative_rate_positive = relative_rate(left_red_data, right_red_data)
 
             left_blue_data = rate_in(blue_intervals, left_timestamps)
             right_blue_data = rate_in(blue_intervals, right_timestamps)
-            relative_rate_negative = [l/(r+l) if r+l > 0 else np.nan for l, r in zip(left_blue_data, right_blue_data)]
+            relative_rate_negative = relative_rate(left_blue_data, right_blue_data)
             data.append((relative_rate_positive, relative_rate_negative))
-
     return data
 
 def relative_rate_blue_red(src_dir, cycles_set=slice(0,8)):
@@ -108,8 +116,8 @@ def relative_rate_blue_red(src_dir, cycles_set=slice(0,8)):
         red_data = rate_in(red_intervals, responses)
         blue_data = rate_in(blue_intervals, responses)
 
-        relative_rate = [r/(r+b) if r+b > 0 else np.nan for r, b in zip(red_data, blue_data)]
-        data.append(relative_rate[cycles_set])
+        relative_rate_all = relative_rate(red_data, blue_data)
+        data.append(relative_rate_all[cycles_set])
     return data
 
 def rate_switching(src_dir, cycles_set=slice(0,8)):
@@ -147,6 +155,6 @@ def relative_rate_switching(src_dir, cycles_set=slice(0,8)):
         red_data = rate_in(red_intervals, switchings)
         blue_data = rate_in(blue_intervals, switchings)
 
-        relative_rate = [r/(r+b) if r+b > 0 else np.nan for r, b in zip(red_data, blue_data)]
-        data.append(relative_rate[cycles_set])
+        relative_rate_all = relative_rate(red_data, blue_data)
+        data.append(relative_rate_all[cycles_set])
     return data
