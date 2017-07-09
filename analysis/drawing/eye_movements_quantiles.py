@@ -134,6 +134,48 @@ def draw_single_left_proportion_positive_negative(src_dir, show=True):
         plt.close()
 
 def draw_single_left_right_proportion(src_dir, show=True):
+    print(os.path.dirname(src_dir))
+    ID = os.path.basename(os.path.dirname(src_dir))
+    paths = sorted(glob(os.path.join(src_dir,'0*')))
+    x_label = 'Successive cycles'
+    y_label = 'Gaze on left proporportion'
+    figure, axarr = plt.subplots(1, 3, sharey=True, sharex=True, figsize=(9, 3)) 
+
+    data = relative_rate_left_right(src_dir,'left_right_onsets')
+    for (left_proportion, right_proportion), axis in zip(data,axarr):
+        axis.plot(left_proportion[0:9],color="k", marker='.') # S+
+        axis.plot(right_proportion[0:9],ls='dashed', color="k",marker='x') # S-
+
+         # remove outer frame
+        axis.spines['top'].set_visible(False)
+        axis.spines['bottom'].set_visible(False)
+        axis.spines['left'].set_visible(False)
+        axis.spines['right'].set_visible(False)
+
+        # (_, top) = axis.get_ylim()
+        axis.set_ylim(0.,1.)
+        (_, right) = axis.get_xlim()
+        axis.set_xlim(-0.5, 9+0.5)
+        axis.set_xticklabels([x for x in range(-1,9+1,2)])
+        
+        #remove ticks
+        axis.xaxis.set_ticks_position('none')
+        axis.yaxis.set_ticks_position('none')
+
+    axarr[0].set_ylabel(y_label)
+    axarr[0].spines['left'].set_visible(True)
+    axarr[1].set_xlabel(x_label)
+    figure.tight_layout()
+    figure.text(.1, .93, ID)
+
+    # save/plot figure
+    if show:
+        plt.show()
+    else:
+        plt.savefig(os.path.join(src_dir,'left_right_proportion_'+ID+'.png'), bbox_inches='tight')
+        plt.close()
+
+def draw_single_left_proportion(src_dir, show=True):
     color_set = [
         (RED_LEFT, GREEN_RIGHT),
         (RED_LEFT, CYAN_RIGHT),
@@ -144,7 +186,7 @@ def draw_single_left_right_proportion(src_dir, show=True):
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
     paths = sorted(glob(os.path.join(src_dir,'0*')))
-    x_label = 'Successive cycles'
+    x_label = 'Stimulus epochs'
     y_label = 'Gaze on left proporportion'
     figure, axarr = plt.subplots(1, 3, sharey=True, sharex=True, figsize=(9, 3)) 
 
@@ -288,7 +330,8 @@ if __name__ == '__main__':
     filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
     for filename in filenames:
         # draw_single_switching_rate(filename)
-        draw_single_left_proportion_positive_negative(filename, False)
+        # draw_single_left_proportion_positive_negative(filename, False)
+        draw_single_left_right_proportion(filename, False)
 
     # from drawing.eye_movements_quantiles import draw_single as draw_gaze_quantiles # NOTE: xy must be normalized
     # from drawing.responses import draw_single as draw_responses
