@@ -144,7 +144,7 @@ def relative_rate_switching(src_dir, cycles_set=slice(0,8)):
 
         left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
         switchings = switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask)
-        print(switchings.shape)
+        # print(switchings.shape)
         # stimuli
         beha_data = load_data(os.path.join(path,"behavioral_events.txt"))
         target_intervals = stimuli_onset(beha_data)
@@ -158,3 +158,48 @@ def relative_rate_switching(src_dir, cycles_set=slice(0,8)):
         relative_rate_all = relative_rate(red_data, blue_data)
         data.append(relative_rate_all[cycles_set])
     return data
+
+def baseline_tracking_extinction_switching_correlation():
+    from constants import INNER_PATHS_DISCRIMINATION
+    from methods import get_data_path
+
+    X = [] 
+    Y = []
+    filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS_DISCRIMINATION]
+    for filename in filenames:
+        # ID = os.path.basename(os.path.dirname(filename))
+        timestamps = 'time'
+        paths = sorted(glob(os.path.join(filename,'0*')))
+
+        baseline_tracking_path = paths[0]
+        all_gaze_data = load_data(os.path.join(baseline_tracking_path,"gaze_coordenates_on_screen.txt"))
+        left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+        left_timestamps = all_gaze_data[left_gaze_mask][timestamps] 
+        right_timestamps = all_gaze_data[right_gaze_mask][timestamps]
+
+        beha_data = load_data(os.path.join(baseline_tracking_path,"behavioral_events.txt"))
+
+        # left_right_onsets
+        l_target_intervals = all_stimuli(beha_data)
+        l_target_intervals = zip(l_target_intervals, l_target_intervals[1:])
+        left_data = rate_in(l_target_intervals, left_timestamps)
+        right_data = rate_in(l_target_intervals, right_timestamps)
+        relative_rate_all = relative_rate(left_data, right_data)
+        X.append(np.nanmean(relative_rate_all[::2])-np.nanmean(relative_rate_all[1::2])) 
+
+
+        extintion_switching_path = paths[1]
+        all_gaze_data = load_data(os.path.join(extintion_switching_path,"gaze_coordenates_on_screen.txt"))
+
+        left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+        switchings = switching_timestamps(all_gaze_data, left_gaze_mask, right_gaze_mask)
+        beha_data = load_data(os.path.join(extintion_switching_path,"behavioral_events.txt"))
+        target_intervals = stimuli_onset(beha_data)
+        red_intervals = zip(target_intervals[0], target_intervals[1])
+        blue_intervals = zip(target_intervals[1], target_intervals[0][1:])
+
+        red_data = rate_in(red_intervals, switchings)
+        blue_data = rate_in(blue_intervals, switchings)
+        Y.append(np.nanmean(blue_data)-np.nanmean(red_data))
+
+    return np.array(X), np.array(Y)

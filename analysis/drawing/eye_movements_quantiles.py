@@ -19,6 +19,7 @@ from glob import glob
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.path import Path as mp
+from scipy.stats import pearsonr
 
 from methods import load_data, stimuli_onset, all_stimuli, color_pair, remove_outside_screen
 from drawing import temporal_perfil
@@ -26,6 +27,7 @@ from constants import BLUE_LEFT, RED_LEFT, GREEN_RIGHT, CYAN_RIGHT, Circle
 from correction import unbiased_gaze, ALGORITHM_QUANTILES
 
 from categorization import relative_rate_switching, rate_switching, relative_rate_left_right
+from categorization import baseline_tracking_extinction_switching_correlation
 
 def draw_single(src_dir, show=True):
     ID = os.path.basename(os.path.dirname(src_dir))
@@ -94,7 +96,6 @@ def draw_single(src_dir, show=True):
 def draw_single_left_proportion_positive_negative(src_dir, show=True):
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
-    paths = sorted(glob(os.path.join(src_dir,'0*')))
     x_label = 'Successive cycles'
     y_label = 'Gaze on left proporportion'
     figure, axarr = plt.subplots(1, 3, sharey=True, sharex=True, figsize=(9, 3)) 
@@ -136,7 +137,6 @@ def draw_single_left_proportion_positive_negative(src_dir, show=True):
 def draw_single_left_right_proportion(src_dir, show=True):
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
-    paths = sorted(glob(os.path.join(src_dir,'0*')))
     x_label = 'Successive cycles'
     y_label = 'Gaze on left proporportion'
     figure, axarr = plt.subplots(1, 3, sharey=True, sharex=True, figsize=(9, 3)) 
@@ -185,7 +185,6 @@ def draw_single_left_proportion(src_dir, show=True):
     
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
-    paths = sorted(glob(os.path.join(src_dir,'0*')))
     x_label = 'Stimulus epochs'
     y_label = 'Gaze on left proporportion'
     figure, axarr = plt.subplots(1, 3, sharey=True, sharex=True, figsize=(9, 3)) 
@@ -242,7 +241,6 @@ def draw_single_left_proportion(src_dir, show=True):
 def draw_single_switching_rate(src_dir, show=True):
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
-    paths = sorted(glob(os.path.join(src_dir,'0*')))
     x_label = 'Successive cycles'
     y_label = 'Switchings per second'
     # title = ID
@@ -289,7 +287,6 @@ def draw_single_switching_rate(src_dir, show=True):
 def draw_single_switching_proportion(src_dir, show=True):
     print(os.path.dirname(src_dir))
     ID = os.path.basename(os.path.dirname(src_dir))
-    paths = sorted(glob(os.path.join(src_dir,'0*')))
     x_label = 'Successive cycles'
     y_label = 'S+ switching proportion'
     # title = ID
@@ -322,20 +319,71 @@ def draw_single_switching_proportion(src_dir, show=True):
     # save/plot figure
     if show:
         plt.show()
+    else:
+        plt.savefig(os.path.join('switching_proportion.png'), bbox_inches='tight')
+        plt.close()
+
+def draw_baseline_tracking_extinction_correlation(show=True):
+    x_label = 'baseline tracking'
+    y_label = 'extinction induced switching'
+
+    X, Y = baseline_tracking_extinction_switching_correlation()
+
+    # axes = plt.gca()
+    fig = plt.figure()
+    axes = fig.add_subplot(111)
+
+    axes.set_ylim(ymax = 1, ymin = -0.5)
+    axes.set_xlim(xmax = 1, xmin = -0.5)
+    axes.scatter(X, Y, c='k')
+
+    # best fit
+    slope, intercept = np.polyfit(X, Y, 1)
+    line = slope*X + intercept
+    axes.plot(X,line, c='k')
+
+    # origin
+    axes.plot((-.5,1),(0,0),ls='dotted', c='k') # x
+    axes.plot((0,0),(-.5,1),ls='dotted', c='k') # y 
+    
+    axes.text(.7,.9,'R=%.2f'%round(pearsonr(X,Y)[0],2),transform = axes.transAxes)
+    # # remove outer frame
+    axes.spines['top'].set_visible(False)
+    axes.spines['bottom'].set_visible(False)
+    axes.spines['left'].set_visible(False)
+    axes.spines['right'].set_visible(False)
+
+    # #remove ticks
+    axes.xaxis.set_ticks_position('none')
+    axes.yaxis.set_ticks_position('none')
+
+    for xi,yi,name in zip(X, Y, ['P1','P2','P3','P4','P6','P7']):  
+        axes.annotate(name, xy=(xi-.02,yi+.05), textcoords='data')
+    axes.set_ylabel(y_label)
+    axes.set_xlabel(x_label)
+    # fig.tight_layout() 
+
+    # save/plot figure
+    if show:
+        plt.show()
+    else:
+        plt.savefig(os.path.join('correlation.png'), bbox_inches='tight')
+        plt.close()
+
 
 if __name__ == '__main__':
-    from constants import INNER_PATHS
-    from methods import get_data_path
+    draw_baseline_tracking_extinction_correlation()
 
-    filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
-    for filename in filenames:
-        # draw_single_switching_rate(filename)
-        # draw_single_left_proportion_positive_negative(filename, False)
-        draw_single_left_right_proportion(filename, False)
+    # from constants import INNER_PATHS
+    # from methods import get_data_path
+    # filenames = [os.path.join(get_data_path(), filename) for filename in INNER_PATHS]
+    # for filename in filenames:
+    #     # draw_single_switching_rate(filename)
+    #     # draw_single_left_proportion_positive_negative(filename, False)
+    #     draw_single_left_right_proportion(filename, False)
 
     # from drawing.eye_movements_quantiles import draw_single as draw_gaze_quantiles # NOTE: xy must be normalized
     # from drawing.responses import draw_single as draw_responses
-
     # data_path = get_data_path()
     # for path in INNER_PATHS:
     #     # draw_responses(os.path.join(data_path, path))
