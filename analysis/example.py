@@ -17,14 +17,14 @@ import matplotlib
 from methods import get_data_path
 from constants import INNER_PATHS
 from drawing import save_all 
-from drawing.eye_movements_dbscan import draw_single as draw_gaze_dbscan # NOTE: xy must be normalized
+# from drawing.eye_movements_dbscan import draw_single as draw_gaze_dbscan # NOTE: xy must be normalized
 from drawing.eye_movements_quantiles import draw_single as draw_gaze_quantiles # NOTE: xy must be normalized
 
 from drawing.responses import draw_single as draw_responses
 
 # matplotlib configurations 
 font = {'family' : 'serif',
-        'size'   : 16}
+        'size'   : 12}
 matplotlib.rc('font', **font)
 
 # assign the root data folder

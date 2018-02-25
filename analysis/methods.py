@@ -99,7 +99,6 @@ def root_mean_square(gp):
 def rate_in(time_interval_pairwise,timestamps):
     def is_inside(timestamps,rangein, rangeout):
         return [t for t in timestamps if (t >= rangein) and (t <= rangeout)]
-
     return [len(is_inside(timestamps, begin, end))/(end-begin) for begin, end in time_interval_pairwise]
 
 def relative_rate(data1, data2):
@@ -126,7 +125,7 @@ def color_pair(behavioral_data, pair):
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
     def all_events(stimulus_code):
-        return [line['time'] for line in behavioral_data if line['event'] == stimulus_code]
+        return [line['time'] for line in behavioral_data if line['event'].decode("utf-8") == stimulus_code]
       
     return [[all_events('1a'), all_events('1b')],
             [all_events('1b'), all_events('2a')],
@@ -138,7 +137,7 @@ def stimuli_onset(behavioral_data):
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
     def all_events(stimulus_code):
-        return [line['time'] for line in behavioral_data if line['event'] == stimulus_code]
+        return [line['time'] for line in behavioral_data if line['event'].decode("utf-8") == stimulus_code]
         
     return [all_events('1a'), all_events('2a')] # [[R1,R2,R3,..],[B1,B2,B3,..]] 
 
@@ -146,14 +145,14 @@ def all_stimuli(behavioral_data):
     """
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
-    return [line['time'] for line in behavioral_data if line['event_type'] == 'stimulus']
+    return [line['time'] for line in behavioral_data if line['event_type'].decode("utf-8") == 'stimulus']
 
 # responses timestamps
 def all_responses(behavioral_data): 
     """
         behavioral_data: np.genfromtxt object; "behavioral_events.txt" as path
     """
-    return [line['time'] for line in behavioral_data if line['event_type'] == 'response']
+    return [line['time'] for line in behavioral_data if line['event_type'].decode("utf-8") == 'response']
 
 # file methods
 ############################

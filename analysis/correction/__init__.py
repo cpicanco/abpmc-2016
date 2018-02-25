@@ -8,7 +8,6 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 import numpy as np
-import cv2
 
 ALGORITHM_KMEANS = 'kmeans'
 ALGORITHM_QUANTILES = 'quantiles'
@@ -16,6 +15,7 @@ ALGORITHM_QUANTILES = 'quantiles'
 def unbiased_gaze(data, algorithm, min_block_size=1000,**kwargs):
     def bias(gaze_block,**kwargs):
         def kmeans(gaze_block,screen_center, k=2):
+            import cv2
             """
             assumes equally distributed gaze_data and k clusters
             """
@@ -42,7 +42,7 @@ def unbiased_gaze(data, algorithm, min_block_size=1000,**kwargs):
             y_stat = 0
 
             for quantile in q:
-                rank = (sample_size * quantile)/100
+                rank = (sample_size * quantile)//100
                 x_stat += x[rank]
                 y_stat += y[rank]
 
@@ -65,10 +65,10 @@ def unbiased_gaze(data, algorithm, min_block_size=1000,**kwargs):
 
     data_count = data.shape[0]    
     if data_count < min_block_size:
-        print("\nToo few data to proceed. \nUsing min_block_size = %d"%data_count)
+        print("\tToo few data to proceed. \n\tUsing min_block_size = %d"%data_count)
         min_block_size = data_count
     else:
-        print("\nUsing min_block_size=%d for a total gaze count of %d"%(min_block_size, data_count))
+        print("\tUsing min_block_size=%d for a total gaze count of %d"%(min_block_size, data_count))
 
     bias_along_blocks = {'bias':[], 'block':[]}
     unbiased = []
@@ -87,28 +87,3 @@ def unbiased_gaze(data, algorithm, min_block_size=1000,**kwargs):
     bias_along_blocks['bias'] = np.vstack(bias_along_blocks['bias'])
     bias_along_blocks['block'] = np.vstack(bias_along_blocks['block'])
     return np.vstack(unbiased), bias_along_blocks
-
-if __name__ == '__main__':
-    import os
-    from methods import load_data, get_filenames, remove_outside_screen
-
-    keyword_arguments = {
-        'screen_center':np.array([0.5, 0.5])
-        }
-
-    for filename in get_filenames('dizzy-timers','gaze_coordenates_on_screen.txt'):
-        print('\n'+filename)
-        all_data = load_data(filename)
-        gaze_data = np.array([all_data['x_norm'], all_data['y_norm']])
-        plot(gaze_data)
-
-        gaze_data, _ = remove_outside_screen(gaze_data)
-        gaze_data, d = unbiased_gaze(gaze_data.T, ALGORITHM_QUANTILES, min_block_size=2000, **keyword_arguments)
-        plot(gaze_data.T)
-        plot_bias(d['bias'],keyword_arguments['screen_center'])
-
-    # output folder
-    # output_path = os.path.join(data_path,'correction')
-
-    # if not os.path.exists(output_path):
-    #     os.makedirs(output_path) 

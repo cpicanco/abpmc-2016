@@ -228,7 +228,7 @@ def draw_single(src_dir, show=True):
         for c, n in zip(turnover,turnover[1:]):
             if c != n:
                 turnover_count += 1
-        print '\n','turnover_count:',turnover_count
+        print('\n','turnover_count:',turnover_count)
 
         left_right_xy = []
         left_right_timestamps = []
@@ -236,7 +236,7 @@ def draw_single(src_dir, show=True):
             _, xy = points
 
             time_key, timestamps = ttime 
-            print time_key, len(timestamps), len(xy)
+            print(time_key, len(timestamps), len(xy))
             if len(timestamps) > 0 and 'cluster' in time_key:
                 left_right_timestamps.append(timestamps)
                 left_right_xy.append(xy)
@@ -297,7 +297,7 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
 
     dictionary = len(data)-1
     gaze_data = load_data(gaze_coordenates_on_screen)
-    print 'Target: ',gaze_coordenates_on_screen
+    print('Target: ',gaze_coordenates_on_screen)
 
     # stimulus size in pixels
     width, height = stimuli_size[0],stimuli_size[1]
@@ -309,18 +309,18 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
     # assume stimuli with uniform diameter, assume eps as stimulus radius
     stimulus_radius = np.mean([width, height])/2 
     data[dictionary]['eps'] = stimulus_radius
-    print 'Using EPS: ',data[dictionary]['eps']
+    print('Using EPS: ',data[dictionary]['eps'])
 
     # assume min_samples as the quotient between the number of gaze points
     # and the number of places used to present stimuli
     # let the number of places be all possible paths in a graph
     data[dictionary]['all_places'] = (K * K) * (K - 1)
     data[dictionary]['min_samples'] = get_min_samples(data[dictionary]['all_places'])
-    print 'Using Min.Samples: ', data[dictionary]['min_samples']
+    print('Using Min.Samples: ', data[dictionary]['min_samples'])
 
     # the researcher knowns how many clusters, so we use this information as a termination clause
     data[dictionary]['min_clusters'] = K
-    print 'Using Min.Clusters: ', data[dictionary]['min_clusters']
+    print('Using Min.Clusters: ', data[dictionary]['min_clusters'])
 
     # DBSCAN expects data with shape (-1,2), we need to transpose ours first
     data[dictionary]['src_xy'] = np.array([gaze_data['x_norm'], gaze_data['y_norm']]).T
@@ -334,21 +334,21 @@ def guess_dbscan_parameters(K,gaze_coordenates_on_screen,
         data[dictionary]['categorized_xy'] = plot_dbscan(data[dictionary]['src_xy'], data[dictionary]['dbscan'],do_plot)
         n_clusters = len_clusters(data[dictionary]['dbscan'])
         if n_clusters >= data[dictionary]['min_clusters']:
-            print 'Finished with: ',n_clusters,' clusters.'
+            print('Finished with: ',n_clusters,' clusters.')
             break
         else:
             plt.gcf().clear()
             data[dictionary]['all_places'] /= 2
             data[dictionary]['min_samples'] = get_min_samples(data[dictionary]['all_places'])
-            print 'Min.Clusters were not found, trying again using:',data[dictionary]['min_samples'], ' min. samples.'
+            print('Min.Clusters were not found, trying again using:',data[dictionary]['min_samples'], ' min. samples.')
             
             trials += 1
             if trials == max_trials:
-                print max_trials," trials. Finished without clusters."
+                print(max_trials," trials. Finished without clusters.")
                 break
 
             if data[dictionary]['all_places'] < 2:
-                print "Too few places. Finished without clusters."
+                print("Too few places. Finished without clusters.")
                 break
 
 def guess_all_dbscan():

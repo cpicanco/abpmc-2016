@@ -59,7 +59,7 @@ def gaze_mask_left_right(all_gaze_data):
     print('Data inside right shape: %d'%len(right_data))
     print('Data inside shapes: %d'%(len(left_data)+len(right_data)))
     
-    return left_gaze_mask, right_gaze_mask
+    return all_gaze_data, left_gaze_mask, right_gaze_mask
 
 def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
     timestamps = 'time'
@@ -67,7 +67,7 @@ def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
     data = []
     for path in paths:
         all_gaze_data = load_data(os.path.join(path,"gaze_coordenates_on_screen.txt"))
-        left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
+        all_gaze_data, left_gaze_mask, right_gaze_mask = gaze_mask_left_right(all_gaze_data)
         left_timestamps = all_gaze_data[left_gaze_mask][timestamps] 
         right_timestamps = all_gaze_data[right_gaze_mask][timestamps]
 
@@ -80,7 +80,7 @@ def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
             relative_rate_all = relative_rate(left_data, right_data)
             data.append(relative_rate_all)
 
-        elif 'left_right_onsets':
+        elif 'left_right_onsets' in target_intervals:
             l_target_intervals = all_stimuli(beha_data)
             l_target_intervals = zip(l_target_intervals, l_target_intervals[1:])
             left_data = rate_in(l_target_intervals, left_timestamps)
@@ -90,16 +90,22 @@ def relative_rate_left_right(src_dir, target_intervals='all_onsets'):
 
         elif 'red_blue_onsets' in target_intervals:
             l_target_intervals = stimuli_onset(beha_data)
+
             red_intervals = zip(l_target_intervals[0], l_target_intervals[1])
-            blue_intervals = zip(l_target_intervals[1], l_target_intervals[0][1:])
-
             left_red_data = rate_in(red_intervals, left_timestamps)
-            right_red_data = rate_in(red_intervals, right_timestamps)
-            relative_rate_positive = relative_rate(left_red_data, right_red_data)
 
+            red_intervals = zip(l_target_intervals[0], l_target_intervals[1])
+            right_red_data = rate_in(red_intervals, right_timestamps)
+            
+            blue_intervals = zip(l_target_intervals[1], l_target_intervals[0][1:])
             left_blue_data = rate_in(blue_intervals, left_timestamps)
+            
+            blue_intervals = zip(l_target_intervals[1], l_target_intervals[0][1:])
             right_blue_data = rate_in(blue_intervals, right_timestamps)
+            
+            relative_rate_positive = relative_rate(left_red_data, right_red_data)
             relative_rate_negative = relative_rate(left_blue_data, right_blue_data)
+
             data.append((relative_rate_positive, relative_rate_negative))
     return data
 
